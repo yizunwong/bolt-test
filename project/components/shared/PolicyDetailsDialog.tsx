@@ -1,11 +1,10 @@
 'use client';
 
-import React, { useMemo } from 'react';
-import { Dialog, DialogContent, IconButton, Typography, Chip, Divider, Grid, Box, CssBaseline } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import { styled, ThemeProvider as MUIThemeProvider, createTheme } from '@mui/material/styles';
-import { useTheme as useAppTheme } from '@/components/shared/ThemeProvider';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Badge } from '@/components/ui/badge';
+import { X } from 'lucide-react';
 import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
 
 export interface Policy {
   id: string | number;
@@ -21,7 +20,7 @@ export interface Policy {
   description?: string;
   features?: string[];
   terms?: string;
-  status?: 'active' | 'inactive';
+  status?: 'active' | 'inactive' | string;
 }
 
 export interface PolicyDetailsDialogProps {
@@ -30,28 +29,7 @@ export interface PolicyDetailsDialogProps {
   onClose: () => void;
 }
 
-const Header = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  padding: theme.spacing(2, 3),
-  borderBottom: `1px solid ${theme.palette.divider}`,
-}));
-
-const Section = styled(Box)(({ theme }) => ({
-  marginBottom: theme.spacing(3),
-}));
-
-const SectionTitle = styled(Typography)(({ theme }) => ({
-  marginBottom: theme.spacing(1),
-  fontWeight: 600,
-}));
-
-const currency = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
-});
-
+const currency = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 const numberFormatter = new Intl.NumberFormat('en-US');
 
 function formatValue(value?: string | number, opts?: { currency?: boolean }) {
@@ -68,165 +46,139 @@ function formatDate(value?: Date | string) {
   return format(date, 'PPP');
 }
 
-export function PolicyDetailsDialog({ policy, open, onClose }: PolicyDetailsDialogProps) {
-  const { theme } = useAppTheme();
-  const mode = useMemo(() => {
-    if (theme === 'system') {
-      if (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        return 'dark';
-      }
-      return 'light';
-    }
-    return theme;
-  }, [theme]);
-
-  const muiTheme = useMemo(() => createTheme({ palette: { mode } }), [mode]);
+export default function PolicyDetailsDialog({ policy, open, onClose }: PolicyDetailsDialogProps) {
+  const statusClass = policy.status === 'active' ? 'status-active' : 'status-warning';
 
   return (
-    <MUIThemeProvider theme={muiTheme}>
-      <CssBaseline />
-      <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
-      <Header>
-        <Typography variant="h6" component="div" noWrap>
-          {policy.name}
-        </Typography>
-        <Chip
-          label={policy.status === 'active' ? 'Active' : 'Inactive'}
-          color={policy.status === 'active' ? 'success' : 'default'}
-          size="small"
-          sx={{ marginLeft: 1 }}
-        />
-        <IconButton onClick={onClose} size="small" sx={{ marginLeft: 'auto' }}>
-          <CloseIcon />
-        </IconButton>
-      </Header>
-      <DialogContent dividers sx={{ padding: 3 }}>
-        <Section>
-          <SectionTitle variant="subtitle1">Basic Information</SectionTitle>
-          <Grid container spacing={2}>
-            <Grid item xs={12} md={6}>
-              <Typography variant="body2" color="text.secondary">
-                Policy ID
-              </Typography>
-              <Typography variant="body1" noWrap>
-                {policy.id}
-              </Typography>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Typography variant="body2" color="text.secondary">
-                Category
-              </Typography>
-              <Typography variant="body1" noWrap>
-                {policy.category || '-'}
-              </Typography>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Typography variant="body2" color="text.secondary">
-                Provider
-              </Typography>
-              <Typography variant="body1" noWrap>
-                {policy.provider || '-'}
-              </Typography>
-            </Grid>
-          </Grid>
-        </Section>
+    <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
+      <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+        <DialogHeader className="flex flex-row items-start justify-between space-y-0">
+          <div className="flex items-center space-x-2 overflow-hidden">
+            <DialogTitle className="text-lg font-semibold truncate">
+              {policy.name}
+            </DialogTitle>
+            {policy.status && (
+              <Badge className={cn('status-badge', statusClass)}>{
+                policy.status.charAt(0).toUpperCase() + policy.status.slice(1)
+              }</Badge>
+            )}
+          </div>
+          <button
+            onClick={onClose}
+            className="ml-2 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
+          >
+            <X className="w-4 h-4" />
+            <span className="sr-only">Close</span>
+          </button>
+        </DialogHeader>
+        <div className="space-y-6 mt-4">
+          <div className="space-y-4">
+            <h4 className="font-semibold text-slate-800 dark:text-slate-100">Basic Information</h4>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <p className="text-sm text-slate-600 dark:text-slate-400">Policy ID</p>
+                <p className="text-slate-800 dark:text-slate-100 truncate">{policy.id}</p>
+              </div>
+              <div className="space-y-1">
+                <p className="text-sm text-slate-600 dark:text-slate-400">Category</p>
+                <p className="text-slate-800 dark:text-slate-100 truncate">
+                  {policy.category || '-'}
+                </p>
+              </div>
+              <div className="space-y-1">
+                <p className="text-sm text-slate-600 dark:text-slate-400">Provider</p>
+                <p className="text-slate-800 dark:text-slate-100 truncate">
+                  {policy.provider || '-'}
+                </p>
+              </div>
+            </div>
+          </div>
 
-        <Divider />
+          <div className="space-y-4">
+            <h4 className="font-semibold text-slate-800 dark:text-slate-100">Financial Details</h4>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <p className="text-sm text-slate-600 dark:text-slate-400">Coverage</p>
+                <p className="text-slate-800 dark:text-slate-100 truncate">
+                  {formatValue(policy.coverage, { currency: typeof policy.coverage === 'number' })}
+                </p>
+              </div>
+              <div className="space-y-1">
+                <p className="text-sm text-slate-600 dark:text-slate-400">Premium</p>
+                <p className="text-emerald-600 dark:text-emerald-400 truncate">
+                  {formatValue(policy.premium, { currency: typeof policy.premium === 'number' })}
+                </p>
+              </div>
+              <div className="space-y-1">
+                <p className="text-sm text-slate-600 dark:text-slate-400">Sales</p>
+                <p className="text-slate-800 dark:text-slate-100 truncate">
+                  {formatValue(policy.sales)}
+                </p>
+              </div>
+              <div className="space-y-1">
+                <p className="text-sm text-slate-600 dark:text-slate-400">Revenue</p>
+                <p className="text-slate-800 dark:text-slate-100 truncate">
+                  {formatValue(policy.revenue, { currency: typeof policy.revenue === 'number' })}
+                </p>
+              </div>
+            </div>
+          </div>
 
-        <Section>
-          <SectionTitle variant="subtitle1">Financial Details</SectionTitle>
-          <Grid container spacing={2}>
-            <Grid item xs={12} md={6}>
-              <Typography variant="body2" color="text.secondary">
-                Coverage
-              </Typography>
-              <Typography variant="body1" noWrap>
-                {formatValue(policy.coverage, { currency: typeof policy.coverage === 'number' })}
-              </Typography>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Typography variant="body2" color="text.secondary">
-                Premium
-              </Typography>
-              <Typography variant="body1" noWrap>
-                {formatValue(policy.premium, { currency: typeof policy.premium === 'number' })}
-              </Typography>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Typography variant="body2" color="text.secondary">
-                Sales
-              </Typography>
-              <Typography variant="body1" noWrap>
-                {formatValue(policy.sales)}
-              </Typography>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Typography variant="body2" color="text.secondary">
-                Revenue
-              </Typography>
-              <Typography variant="body1" noWrap>
-                {formatValue(policy.revenue, { currency: typeof policy.revenue === 'number' })}
-              </Typography>
-            </Grid>
-          </Grid>
-        </Section>
+          <div className="space-y-4">
+            <h4 className="font-semibold text-slate-800 dark:text-slate-100">Dates</h4>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <p className="text-sm text-slate-600 dark:text-slate-400">Created</p>
+                <p className="text-slate-800 dark:text-slate-100 truncate">
+                  {formatDate(policy.created)}
+                </p>
+              </div>
+              <div className="space-y-1">
+                <p className="text-sm text-slate-600 dark:text-slate-400">Last Updated</p>
+                <p className="text-slate-800 dark:text-slate-100 truncate">
+                  {formatDate(policy.lastUpdated)}
+                </p>
+              </div>
+            </div>
+          </div>
 
-        <Divider />
+          {policy.description && (
+            <div className="space-y-2">
+              <h4 className="font-semibold text-slate-800 dark:text-slate-100">Description</h4>
+              <p className="text-slate-700 dark:text-slate-300 whitespace-pre-line">
+                {policy.description}
+              </p>
+            </div>
+          )}
 
-        <Section>
-          <SectionTitle variant="subtitle1">Dates</SectionTitle>
-          <Grid container spacing={2}>
-            <Grid item xs={12} md={6}>
-              <Typography variant="body2" color="text.secondary">
-                Created
-              </Typography>
-              <Typography variant="body1" noWrap>
-                {formatDate(policy.created)}
-              </Typography>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Typography variant="body2" color="text.secondary">
-                Last Updated
-              </Typography>
-              <Typography variant="body1" noWrap>
-                {formatDate(policy.lastUpdated)}
-              </Typography>
-            </Grid>
-          </Grid>
-        </Section>
+          {policy.features && policy.features.length > 0 && (
+            <div className="space-y-2">
+              <h4 className="font-semibold text-slate-800 dark:text-slate-100">Features</h4>
+              <div className="flex flex-wrap gap-1">
+                {policy.features.map((feature, idx) => (
+                  <Badge
+                    key={idx}
+                    variant="secondary"
+                    className="text-xs bg-slate-200 dark:bg-slate-600/50 text-slate-700 dark:text-slate-300"
+                  >
+                    {feature}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          )}
 
-        {policy.description && (
-          <Section>
-            <SectionTitle variant="subtitle1">Description</SectionTitle>
-            <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
-              {policy.description}
-            </Typography>
-          </Section>
-        )}
-
-        {policy.features && policy.features.length > 0 && (
-          <Section>
-            <SectionTitle variant="subtitle1">Features</SectionTitle>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-              {policy.features.map((feature, idx) => (
-                <Chip key={idx} label={feature} size="small" />
-              ))}
-            </Box>
-          </Section>
-        )}
-
-        {policy.terms && (
-          <Section>
-            <SectionTitle variant="subtitle1">Terms</SectionTitle>
-            <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
-              {policy.terms}
-            </Typography>
-          </Section>
-        )}
+          {policy.terms && (
+            <div className="space-y-2">
+              <h4 className="font-semibold text-slate-800 dark:text-slate-100">Terms</h4>
+              <p className="text-slate-700 dark:text-slate-300 whitespace-pre-line">
+                {policy.terms}
+              </p>
+            </div>
+          )}
+        </div>
       </DialogContent>
-      </Dialog>
-    </MUIThemeProvider>
+    </Dialog>
   );
 }
 
-export default PolicyDetailsDialog;
