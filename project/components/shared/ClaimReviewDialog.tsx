@@ -27,7 +27,7 @@ interface ClaimReviewDialogProps {
   trigger?: ReactNode;
 }
 
-export function ClaimReviewDialog({ claim }: ClaimReviewDialogProps) {
+export function ClaimReviewDialog({ claim, trigger }: ClaimReviewDialogProps) {
   const [open, setOpen] = useState(false);
   const adjusters = ['Alice Brown', 'David Lee', 'Monica Garcia'];
   const [reviewForm, setReviewForm] = useState({
