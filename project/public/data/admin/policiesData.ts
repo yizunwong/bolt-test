@@ -1,3 +1,8 @@
+<<<<<<< mxhs0y-codex/move-dummy-data-to-public/data
+import { Heart, Plane, Sprout, Shield } from 'lucide-react';
+
+=======
+>>>>>>> main
 export const policies = [
     {
       id: 'POL-001',
@@ -348,3 +353,8 @@ export const policies = [
     }
   };
 
+<<<<<<< mxhs0y-codex/move-dummy-data-to-public/data
+
+export { getCategoryIcon, getCategoryColor, getStatusColor };
+=======
+>>>>>>> main
