@@ -15,7 +15,7 @@ import {
   Gift
 } from 'lucide-react';
 import { useState } from 'react';
-import { LineChart, HeatMapChart, ChartsTooltip, ChartsLegend, ChartsAxis, ChartsColorBar } from '@mui/x-charts';
+import { LineChart, ChartsTooltip, ChartsLegend } from '@mui/x-charts';
 
 interface Props {
   offer: Offer;
@@ -47,6 +47,11 @@ export default function OfferAnalyticsClient({ offer }: Props) {
     [0.2, 0.1, 0.4, 0.5, 0.3, 0.6, 0.4],
     [0.3, 0.2, 0.5, 0.6, 0.4, 0.3, 0.5]
   ];
+
+  function heatColor(value: number) {
+    const hue = (1 - value) * 240; // blue (240) to red (0)
+    return `hsl(${hue}, 80%, 55%)`;
+  }
 
 
   return (
@@ -165,25 +170,42 @@ export default function OfferAnalyticsClient({ offer }: Props) {
             <CardTitle>Conversion Rate Heat Map</CardTitle>
           </CardHeader>
           <CardContent>
-            <HeatMapChart
-              height={250}
-              series={[
-                {
-                  data: heatMapValues.flatMap((row, r) =>
-                    row.map((v, i) => ({ x: months[i], y: `S${r + 1}`, value: v }))
-                  ),
-                  label: 'Conversion'
-                }
-              ]}
-              xAxis={[{ scaleType: 'band', data: months, label: 'Month' }]}
-              yAxis={[{ scaleType: 'band', data: ['S1', 'S2', 'S3'], label: 'Segment' }]}
-              valueFormatter={(v) => `${(v * 100).toFixed(0)}%`}
-            >
-              <ChartsLegend position="right" />
-              <ChartsTooltip />
-              <ChartsColorBar valueFormatter={(v) => `${(v * 100).toFixed(0)}%`} />
-              <ChartsAxis />
-            </HeatMapChart>
+            <div className="overflow-x-auto">
+              <table className="w-full text-center text-sm">
+                <thead>
+                  <tr>
+                    <th className="p-1 text-left">Segment</th>
+                    {months.map((m) => (
+                      <th key={m} className="p-1">
+                        {m}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {heatMapValues.map((row, r) => (
+                    <tr key={r} className="border-t border-slate-200 dark:border-slate-700">
+                      <th className="p-1 text-left">S{r + 1}</th>
+                      {row.map((v, i) => (
+                        <td
+                          key={i}
+                          className="p-1"
+                          style={{ backgroundColor: heatColor(v) }}
+                          title={`${(v * 100).toFixed(1)}%`}
+                        >
+                          {(v * 100).toFixed(0)}%
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div className="flex items-center space-x-2 mt-2">
+                <span className="text-xs">0%</span>
+                <div className="flex-1 h-2 rounded bg-gradient-to-r from-blue-500 via-yellow-300 to-red-500" />
+                <span className="text-xs">100%</span>
+              </div>
+            </div>
           </CardContent>
         </Card>
 
