@@ -1,15 +1,20 @@
 'use client';
 
 import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { CheckCircle, XCircle } from 'lucide-react';
 import { walletBalance } from '@/public/data/policyholder/walletData';
+import { policies } from '@/public/data/policyholder/browseData';
 import { logEvent } from '@/lib/analytics';
 
 export default function BuyWithToken() {
-  const policyCost = 0.8; // ETH
+  const searchParams = useSearchParams();
+  const policyId = Number(searchParams.get('policyId'));
+  const policy = policies.find(p => p.id === policyId);
+  const policyCost = policy ? parseFloat(policy.premium) : 0.8; // ETH
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -54,8 +59,20 @@ export default function BuyWithToken() {
       case 1:
         return (
           <div className="space-y-4">
+            {policy && (
+              <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+                <p className="font-semibold text-slate-700 dark:text-slate-200">
+                  {policy.name}
+                </p>
+                <p className="text-sm text-slate-600 dark:text-slate-400">
+                  Provider: {policy.provider}
+                </p>
+                <p className="text-sm text-slate-600 dark:text-slate-400">
+                  Cost: {policyCost} ETH
+                </p>
+              </div>
+            )}
             <p className="text-slate-700 dark:text-slate-300">Balance: {walletBalance.eth} ETH</p>
-            <p className="text-slate-700 dark:text-slate-300">Policy cost: {policyCost} ETH</p>
             {error && (
               <Alert variant="destructive">
                 <AlertTitle>Error</AlertTitle>
@@ -70,6 +87,19 @@ export default function BuyWithToken() {
       case 2:
         return (
           <div className="space-y-4">
+            {policy && (
+              <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+                <p className="font-semibold text-slate-700 dark:text-slate-200">
+                  {policy.name}
+                </p>
+                <p className="text-sm text-slate-600 dark:text-slate-400">
+                  Provider: {policy.provider}
+                </p>
+                <p className="text-sm text-slate-600 dark:text-slate-400">
+                  Cost: {policyCost} ETH
+                </p>
+              </div>
+            )}
             <p className="text-slate-700 dark:text-slate-300">Tokens approved.</p>
             {error && (
               <Alert variant="destructive">
@@ -87,6 +117,11 @@ export default function BuyWithToken() {
           <div className="text-center space-y-2">
             <CheckCircle className="w-12 h-12 text-emerald-600 mx-auto" />
             <p className="font-semibold text-slate-700 dark:text-slate-300">Purchase successful!</p>
+            {policy && (
+              <p className="text-sm text-slate-600 dark:text-slate-400">
+                {policy.name} - {policyCost} ETH
+              </p>
+            )}
             <p className="text-sm text-slate-600 dark:text-slate-400">Tx Hash: {txHash}</p>
           </div>
         ) : (

@@ -230,7 +230,10 @@ export default function BrowsePolicies() {
                     >
                       Details
                     </Button>
-                    <Link href="/policyholder/buy-with-token" className="flex-1">
+                    <Link
+                      href={`/policyholder/buy-with-token?policyId=${policy.id}`}
+                      className="flex-1"
+                    >
                       <Button
                         onClick={() => logEvent('start_purchase', policy.id)}
                         className="w-full gradient-accent text-white floating-button"
