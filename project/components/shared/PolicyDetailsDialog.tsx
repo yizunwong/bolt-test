@@ -50,7 +50,10 @@ export default function PolicyDetailsDialog({ policy, open, onClose }: PolicyDet
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+    <DialogContent
+      onOpenAutoFocus={(e) => e.preventDefault()}
+      className="max-w-3xl max-h-[80vh] overflow-y-auto"
+    >
         <DialogHeader className="flex flex-row items-start justify-between space-y-0">
           <div className="flex items-center space-x-2 overflow-hidden">
             <DialogTitle className="text-lg font-semibold truncate">
