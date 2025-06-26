@@ -361,17 +361,20 @@ export default function Reports() {
     }
   };
 
-  const handleGenerateReport = (reportId: string, format: string) => {
-    const content = `Sample ${reportId} report in ${format} format`;
-    const mimeType =
-      format === 'Excel'
-        ? 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        : 'application/pdf';
-    const blob = new Blob([content], { type: mimeType });
+  const handleGenerateReport = async (reportId: string, format: string) => {
+    const extension = format === 'Excel' ? 'xlsx' : 'pdf';
+    const prefix =
+      reportId === 'sales-summary'
+        ? 'sales-summary-template'
+        : 'claims-analysis-template';
+    const fileName = `${prefix}.${extension}`;
+
+    const response = await fetch(`/templates/${fileName}`);
+    const blob = await response.blob();
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `${reportId}.${format === 'Excel' ? 'xlsx' : 'pdf'}`;
+    link.download = fileName;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
