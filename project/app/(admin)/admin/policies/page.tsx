@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Pagination } from '@/components/shared/Pagination';
+import PolicyDetailsDialog from '@/components/shared/PolicyDetailsDialog';
 import { 
   Plus, 
   Search, 
@@ -31,6 +32,7 @@ export default function ManagePolicies() {
   const [filterCategory, setFilterCategory] = useState('all');
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [selectedPolicy, setSelectedPolicy] = useState<any>(null);
+  const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(15);
 
@@ -820,7 +822,14 @@ export default function ManagePolicies() {
                   </div>
 
                   <div className="flex gap-2 pt-4 border-t border-slate-100 dark:border-slate-700">
-                    <Button variant="outline" className="flex-1 floating-button">
+                    <Button
+                      variant="outline"
+                      className="flex-1 floating-button"
+                      onClick={() => {
+                        setSelectedPolicy(policy);
+                        setIsDetailsDialogOpen(true);
+                      }}
+                    >
                       <Eye className="w-4 h-4 mr-2" />
                       View Details
                     </Button>
@@ -857,6 +866,16 @@ export default function ManagePolicies() {
           </div>
         )}
       </div>
+      {selectedPolicy && (
+        <PolicyDetailsDialog
+          policy={selectedPolicy}
+          open={isDetailsDialogOpen}
+          onClose={() => {
+            setIsDetailsDialogOpen(false);
+            setSelectedPolicy(null);
+          }}
+        />
+      )}
     </div>
   );
 }
