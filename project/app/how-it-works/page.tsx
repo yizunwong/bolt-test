@@ -181,20 +181,13 @@ export default function HowItWorksPage() {
     },
     {
       step: 2,
-      title: 'AI Verification',
-      description: 'Our AI system instantly verifies claim details and documentation',
-      icon: Eye,
-      timeframe: '30 seconds'
-    },
-    {
-      step: 3,
       title: 'Smart Contract Processing',
       description: 'Blockchain smart contracts automatically process approved claims',
       icon: Settings,
       timeframe: '1 minute'
     },
     {
-      step: 4,
+      step: 3,
       title: 'Instant Payout',
       description: 'Receive your payout directly to your wallet in cryptocurrency',
       icon: Zap,
@@ -469,7 +462,7 @@ export default function HowItWorksPage() {
 
           <div className="text-center mt-12">
             <p className="text-lg text-slate-600 dark:text-slate-400 mb-6">
-              Total claims processing time: <span className="font-bold text-emerald-600 dark:text-emerald-400">Under 4 minutes</span>
+              Total claims processing time: <span className="font-bold text-emerald-600 dark:text-emerald-400">Under 3 minutes</span>
             </p>
             <Link href="/auth/register">
               <Button className="gradient-accent text-white floating-button px-8 py-3">
