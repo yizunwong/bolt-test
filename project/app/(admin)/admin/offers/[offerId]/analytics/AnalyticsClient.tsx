@@ -41,8 +41,17 @@ export default function OfferAnalyticsClient({ offer }: Props) {
   const historicalAvg = 5;
   const redemptionTrend = [1, 2, 0, 3, 1, 2, 1];
   const revenueTrend = [0, 0.5, 0.8, 1.1, 1.4, 2, 3];
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'];
-  const heatMapValues = [0.1, 0.3, 0.2, 0.4, 0.6, 0.5, 0.3];
+  const months = [1, 2, 3, 4, 5, 6, 7];
+  const heatMapValues = [
+    [0.1, 0.3, 0.2, 0.4, 0.6, 0.5, 0.3],
+    [0.2, 0.1, 0.4, 0.5, 0.3, 0.6, 0.4],
+    [0.3, 0.2, 0.5, 0.6, 0.4, 0.3, 0.5]
+  ];
+
+  const heatColor = (v: number) => {
+    const hue = 240 - v * 240; // blue (low) to red (high)
+    return `hsl(${hue}, 70%, 50%)`;
+  };
 
   return (
     <div className="section-spacing">
@@ -131,15 +140,15 @@ export default function OfferAnalyticsClient({ offer }: Props) {
             <CardTitle>Revenue &amp; Redemptions Trend</CardTitle>
           </CardHeader>
           <CardContent>
-            <svg viewBox="0 0 140 80" className="w-full h-40">
-              <line x1="30" y1="10" x2="30" y2="60" className="stroke-slate-300 dark:stroke-slate-700" />
-              <line x1="30" y1="60" x2="130" y2="60" className="stroke-slate-300 dark:stroke-slate-700" />
+            <svg viewBox="0 0 160 90" className="w-full h-44">
+              <line x1="40" y1="10" x2="40" y2="70" className="stroke-slate-300 dark:stroke-slate-700" />
+              <line x1="40" y1="70" x2="150" y2="70" className="stroke-slate-300 dark:stroke-slate-700" />
               <polyline
                 fill="none"
                 stroke="rgb(16,185,129)"
                 strokeWidth="2"
                 points={revenueTrend
-                  .map((v, i) => `${30 + i * 15},${60 - v * 15}`)
+                  .map((v, i) => `${40 + i * 15},${70 - v * 15}`)
                   .join(' ')}
               />
               <polyline
@@ -147,14 +156,14 @@ export default function OfferAnalyticsClient({ offer }: Props) {
                 stroke="rgb(59,130,246)"
                 strokeWidth="2"
                 points={redemptionTrend
-                  .map((v, i) => `${30 + i * 15},${60 - v * 15}`)
+                  .map((v, i) => `${40 + i * 15},${70 - v * 15}`)
                   .join(' ')}
               />
               {months.map((m, i) => (
                 <text
                   key={m}
-                  x={30 + i * 15}
-                  y="72"
+                  x={40 + i * 15}
+                  y="82"
                   className="text-[10px] fill-slate-600 dark:fill-slate-400"
                   textAnchor="middle"
                 >
@@ -164,15 +173,33 @@ export default function OfferAnalyticsClient({ offer }: Props) {
               {[0, 1, 2, 3].map((a) => (
                 <text
                   key={a}
-                  x="20"
-                  y={60 - a * 15 + 4}
+                  x="32"
+                  y={70 - a * 15 + 4}
                   className="text-[10px] fill-slate-600 dark:fill-slate-400"
                   textAnchor="end"
                 >
-                  {a}
+                  {`${a} ETH`}
                 </text>
               ))}
+              <text x="95" y="88" className="text-[10px] fill-slate-600 dark:fill-slate-400" textAnchor="middle">Month</text>
+              <text
+                x="12"
+                y="40"
+                className="text-[10px] fill-slate-600 dark:fill-slate-400"
+                textAnchor="middle"
+                transform="rotate(-90 12 40)"
+              >
+                Amount (ETH)
+              </text>
             </svg>
+            <div className="flex justify-end gap-4 text-xs mt-2">
+              <div className="flex items-center gap-1">
+                <span className="w-3 h-3 bg-emerald-500 rounded-sm" /> Revenue
+              </div>
+              <div className="flex items-center gap-1">
+                <span className="w-3 h-3 bg-blue-500 rounded-sm" /> Redemptions
+              </div>
+            </div>
           </CardContent>
         </Card>
 
@@ -181,18 +208,42 @@ export default function OfferAnalyticsClient({ offer }: Props) {
             <CardTitle>Conversion Rate Heat Map</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-7 gap-2">
-              {heatMapValues.map((v, i) => (
-                <div key={i} className="flex flex-col items-center">
-                  <div
-                    className="w-6 h-6 rounded-sm"
-                    style={{ backgroundColor: `rgba(16,185,129,${v})` }}
-                  />
-                  <span className="text-[10px] text-slate-600 dark:text-slate-400 mt-1">
-                    W{i + 1}
-                  </span>
-                </div>
-              ))}
+            <div className="overflow-x-auto">
+              <table className="border-collapse">
+                <thead>
+                  <tr>
+                    <th className="w-8 text-[10px]" />
+                    {months.map((m) => (
+                      <th key={m} className="w-8 text-center text-[10px] text-slate-600 dark:text-slate-400">
+                        {m}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {heatMapValues.map((row, r) => (
+                    <tr key={r}>
+                      <th className="text-right pr-1 text-[10px] text-slate-600 dark:text-slate-400">S{r + 1}</th>
+                      {row.map((v, i) => (
+                        <td key={i} className="relative group">
+                          <div
+                            className="w-8 h-8 flex items-center justify-center rounded-sm text-[10px] text-white"
+                            style={{ backgroundColor: heatColor(v) }}
+                            title={`${(v * 100).toFixed(1)}% conversion`}
+                          >
+                            {(v * 100).toFixed(0)}%
+                          </div>
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div className="flex items-center mt-2 gap-2 text-[10px]">
+                <span>0%</span>
+                <div className="flex-1 h-2 bg-gradient-to-r from-blue-500 via-emerald-500 to-red-500 rounded" />
+                <span>100%</span>
+              </div>
             </div>
           </CardContent>
         </Card>
