@@ -142,19 +142,26 @@ export default function OfferAnalyticsClient({ offer }: Props) {
           </CardHeader>
           <CardContent>
             <LineChart
-              height={250}
-              margin={{ top: 20, left: 60, right: 20, bottom: 80 }}
+              height={320}
+              margin={{ top: 20, left: 60, right: 20, bottom: 120 }} 
               series={[
                 {
                   data: revenueTrend,
-                  color: '#10B981'
+                  color: '#10B981',
+                  label: 'Revenue'
                 },
                 {
                   data: redemptionTrend,
-                  color: '#3B82F6'
+                  color: '#3B82F6',
+                  label: 'Redemptions'
                 }
               ]}
-              xAxis={[{ data: months, scaleType: 'point', label: 'Month', labelStyle: { transform: 'translate(0, 30px)' } }]}
+              xAxis={[{
+                data: months,
+                scaleType: 'point',
+                label: 'Month',
+                labelStyle: { transform: 'translate(0, 30px)' }
+              }]}
               yAxis={[{
                 labelStyle: { transform: 'translate(-40px, 0)' },
                 valueFormatter: (v) => `${v} ETH`
