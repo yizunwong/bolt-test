@@ -148,12 +148,14 @@ export default function OfferAnalyticsClient({ offer }: Props) {
                 {
                   data: revenueTrend,
                   color: '#10B981',
-                  label: 'Revenue'
+                  label: 'Revenue',
+                  yAxisId: 'leftAxisId'
                 },
                 {
                   data: redemptionTrend,
                   color: '#3B82F6',
-                  label: 'Redemptions'
+                  label: 'Redemptions',
+                  yAxisId: 'rightAxisId'
                 }
               ]}
               xAxis={[{
