@@ -4,6 +4,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { StatsCard } from '@/components/shared/StatsCard';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { useState } from 'react';
 import { 
   Shield, 
   Users, 
@@ -13,7 +21,8 @@ import {
   Clock,
   DollarSign,
   FileText,
-  Eye
+  Eye,
+  X
 } from 'lucide-react';
 
 export default function AdminDashboard() {
@@ -30,6 +39,16 @@ export default function AdminDashboard() {
     { name: 'Weather-Based Crop Insurance', sales: 156, revenue: '390 ETH', trend: '+15%' },
     { name: 'Premium Health Plus', sales: 98, revenue: '147 ETH', trend: '+5%' }
   ];
+
+  const [selectedClaim, setSelectedClaim] = useState<any>(null);
+
+  const handleApprove = (claimId: string) => {
+    console.log('Approving claim:', claimId);
+  };
+
+  const handleReject = (claimId: string) => {
+    console.log('Rejecting claim:', claimId);
+  };
 
   return (
     <div className="section-spacing">
@@ -117,9 +136,68 @@ export default function AdminDashboard() {
                             {claim.status.charAt(0).toUpperCase() + claim.status.slice(1)}
                           </Badge>
                         </div>
-                        <Button size="sm" variant="outline" className="floating-button">
-                          Review
-                        </Button>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="floating-button"
+                              onClick={() => setSelectedClaim(claim)}
+                            >
+                              Review
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>Claim Review - {selectedClaim?.id}</DialogTitle>
+                            </DialogHeader>
+                            {selectedClaim && (
+                              <div className="content-spacing">
+                                <div className="element-spacing">
+                                  <div className="flex justify-between">
+                                    <span className="text-slate-600 dark:text-slate-400">Type:</span>
+                                    <span className="text-slate-800 dark:text-slate-100">{selectedClaim.type}</span>
+                                  </div>
+                                  <div className="flex justify-between">
+                                    <span className="text-slate-600 dark:text-slate-400">Amount:</span>
+                                    <span className="text-slate-800 dark:text-slate-100">{selectedClaim.amount}</span>
+                                  </div>
+                                  <div className="flex justify-between">
+                                    <span className="text-slate-600 dark:text-slate-400">Submitted By:</span>
+                                    <span className="text-slate-800 dark:text-slate-100">{selectedClaim.submittedBy}</span>
+                                  </div>
+                                  <div className="flex justify-between">
+                                    <span className="text-slate-600 dark:text-slate-400">Date:</span>
+                                    <span className="text-slate-800 dark:text-slate-100">{selectedClaim.date}</span>
+                                  </div>
+                                  <div className="flex justify-between">
+                                    <span className="text-slate-600 dark:text-slate-400">Status:</span>
+                                    <span className="text-slate-800 dark:text-slate-100 capitalize">{selectedClaim.status}</span>
+                                  </div>
+                                </div>
+                                {(selectedClaim.status === 'pending' || selectedClaim.status === 'review') && (
+                                  <div className="responsive-stack pt-4 border-t border-slate-200 dark:border-slate-700">
+                                    <Button
+                                      variant="outline"
+                                      onClick={() => handleReject(selectedClaim.id)}
+                                      className="flex-1 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800 hover:bg-red-50 dark:hover:bg-red-900/20"
+                                    >
+                                      <X className="w-4 h-4 mr-2" />
+                                      Reject Claim
+                                    </Button>
+                                    <Button
+                                      onClick={() => handleApprove(selectedClaim.id)}
+                                      className="flex-1 gradient-accent text-white floating-button"
+                                    >
+                                      <CheckCircle className="w-4 h-4 mr-2" />
+                                      Approve Claim
+                                    </Button>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </DialogContent>
+                        </Dialog>
                       </div>
                     </div>
                   ))}
