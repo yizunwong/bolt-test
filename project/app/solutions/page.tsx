@@ -144,43 +144,6 @@ export default function SolutionsPage() {
         satisfaction: '96.8%',
         avgPayout: '6 hours'
       }
-    },
-    {
-      id: 'business',
-      name: 'Business Insurance',
-      icon: Building,
-      gradient: 'from-purple-500 to-indigo-500',
-      description: 'Comprehensive business protection including liability, property, and cyber security coverage',
-      features: [
-        'General liability coverage',
-        'Property damage protection',
-        'Cyber security insurance',
-        'Business interruption',
-        'Professional liability',
-        'Workers compensation'
-      ],
-      capabilities: [
-        'Risk assessment AI',
-        'Automated underwriting',
-        'Real-time monitoring',
-        'Compliance tracking',
-        'Incident reporting',
-        'Claims management portal'
-      ],
-      useCases: [
-        'Small business protection',
-        'Enterprise coverage',
-        'Professional services',
-        'E-commerce businesses',
-        'Manufacturing companies',
-        'Technology startups'
-      ],
-      stats: {
-        coverage: 'Up to $10M',
-        claims: '12K+ processed',
-        satisfaction: '99.1%',
-        avgPayout: '48 hours'
-      }
     }
   ];
 
