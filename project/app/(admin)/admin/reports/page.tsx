@@ -44,7 +44,7 @@ export default function Reports() {
       name: 'Sales Summary Report',
       description: 'Comprehensive overview of policy sales and revenue',
       category: 'sales',
-      format: ['PDF', 'CSV', 'Excel'],
+      format: ['PDF', 'Excel'],
       lastGenerated: '2024-12-20',
       frequency: 'Weekly'
     },
@@ -53,44 +53,8 @@ export default function Reports() {
       name: 'Claims Analysis Report',
       description: 'Detailed analysis of claims processing and payouts',
       category: 'claims',
-      format: ['PDF', 'CSV'],
+      format: ['PDF', 'Excel'],
       lastGenerated: '2024-12-19',
-      frequency: 'Monthly'
-    },
-    {
-      id: 'customer-insights',
-      name: 'Customer Insights Report',
-      description: 'Customer behavior and demographic analysis',
-      category: 'customers',
-      format: ['PDF', 'Excel'],
-      lastGenerated: '2024-12-18',
-      frequency: 'Monthly'
-    },
-    {
-      id: 'financial-overview',
-      name: 'Financial Overview Report',
-      description: 'Complete financial performance and metrics',
-      category: 'financial',
-      format: ['PDF', 'Excel'],
-      lastGenerated: '2024-12-20',
-      frequency: 'Daily'
-    },
-    {
-      id: 'risk-assessment',
-      name: 'Risk Assessment Report',
-      description: 'Risk analysis and exposure evaluation',
-      category: 'risk',
-      format: ['PDF'],
-      lastGenerated: '2024-12-17',
-      frequency: 'Quarterly'
-    },
-    {
-      id: 'compliance-audit',
-      name: 'Compliance Audit Report',
-      description: 'Regulatory compliance and audit trail',
-      category: 'compliance',
-      format: ['PDF', 'CSV'],
-      lastGenerated: '2024-12-15',
       frequency: 'Monthly'
     }
   ];
@@ -398,8 +362,20 @@ export default function Reports() {
   };
 
   const handleGenerateReport = (reportId: string, format: string) => {
-    console.log(`Generating ${reportId} in ${format} format`);
-    // Handle report generation
+    const content = `Sample ${reportId} report in ${format} format`;
+    const mimeType =
+      format === 'Excel'
+        ? 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        : 'application/pdf';
+    const blob = new Blob([content], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${reportId}.${format === 'Excel' ? 'xlsx' : 'pdf'}`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   return (
