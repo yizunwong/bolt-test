@@ -22,7 +22,8 @@ import {
   Monitor,
   Code,
   AlertTriangle,
-  Users
+  Users,
+  ChevronDown
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -31,6 +32,7 @@ interface NavbarProps {
 
 export function Navbar({ role }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
   const allLinks = {
     policyholder: [
@@ -56,9 +58,12 @@ export function Navbar({ role }: NavbarProps) {
   };
 
   const defaultLinks = [
-  { href: '/', label: 'Home', icon: undefined },
-  { href: '/about', label: 'About', icon: undefined },
-  { href: '/contact', label: 'Contact', icon: undefined }
+    { href: '/solutions', label: 'Solutions', icon: undefined },
+    { href: '/how-it-works', label: 'How It Works', icon: undefined },
+    { href: '/benefits', label: 'Benefits', icon: undefined },
+    { href: '/plans', label: 'Plans & Pricing', icon: undefined },
+    { href: '/trust', label: 'Trust & Security', icon: undefined },
+    { href: '/help', label: 'Help Center', icon: undefined }
   ];
 
   const navigationLinks = role ? allLinks[role] : defaultLinks;
@@ -74,6 +79,20 @@ export function Navbar({ role }: NavbarProps) {
         return '/system-admin/profile';
       default:
         return '/profile';
+    }
+  };
+
+  // Get the correct dashboard link based on role
+  const getDashboardLink = () => {
+    switch (role) {
+      case 'policyholder':
+        return '/policyholder';
+      case 'admin':
+        return '/admin';
+      case 'system-admin':
+        return '/system-admin';
+      default:
+        return '/dashboard';
     }
   };
 
@@ -116,11 +135,55 @@ export function Navbar({ role }: NavbarProps) {
                     <span className="w-1.5 h-1.5 bg-white rounded-full"></span>
                   </span>
                 </Button>
-                <Link href={getProfileLink()}>
-                  <Button variant="ghost" size="sm" className="floating-button w-9 h-9 p-0">
-                    <User className="w-5 h-5" />
+                
+                {/* User Avatar Dropdown */}
+                <div className="relative">
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="floating-button flex items-center space-x-2 px-3"
+                    onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                  >
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 flex items-center justify-center">
+                      <User className="w-4 h-4 text-white" />
+                    </div>
+                    <ChevronDown className="w-4 h-4" />
                   </Button>
-                </Link>
+                  
+                  {/* Dropdown Menu */}
+                  {isUserMenuOpen && (
+                    <div className="absolute right-0 mt-2 w-48 glass-card rounded-xl shadow-lg border border-white/20 dark:border-slate-700/50 py-2 z-50">
+                      <Link 
+                        href={getProfileLink()}
+                        className="flex items-center px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100/50 dark:hover:bg-slate-700/50 transition-colors"
+                        onClick={() => setIsUserMenuOpen(false)}
+                      >
+                        <User className="w-4 h-4 mr-3" />
+                        Profile
+                      </Link>
+                      <Link 
+                        href={getDashboardLink()}
+                        className="flex items-center px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100/50 dark:hover:bg-slate-700/50 transition-colors"
+                        onClick={() => setIsUserMenuOpen(false)}
+                      >
+                        <Home className="w-4 h-4 mr-3" />
+                        Dashboard
+                      </Link>
+                      <hr className="my-2 border-slate-200 dark:border-slate-700" />
+                      <button 
+                        className="flex items-center w-full px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                        onClick={() => {
+                          setIsUserMenuOpen(false);
+                          // Handle logout logic here
+                          console.log('Logout clicked');
+                        }}
+                      >
+                        <X className="w-4 h-4 mr-3" />
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
               </>
             )}
             
@@ -172,21 +235,42 @@ export function Navbar({ role }: NavbarProps) {
               ))}
               
               {role && (
-                <div className="flex items-center space-x-4 pt-4 border-t border-white/20 dark:border-slate-700/50">
-                  <Button variant="ghost" size="sm" className="relative floating-button">
+                <div className="flex flex-col space-y-2 pt-4 border-t border-white/20 dark:border-slate-700/50">
+                  <Button variant="ghost" size="sm" className="relative floating-button justify-start">
                     <Bell className="w-5 h-5 mr-2" />
                     Notifications
-                    <span className="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full text-xs flex items-center justify-center">
+                    <span className="absolute top-1 right-1 w-3 h-3 bg-red-500 rounded-full text-xs flex items-center justify-center">
                       <span className="w-1.5 h-1.5 bg-white rounded-full"></span>
                     </span>
                   </Button>
               
                   <Link href={getProfileLink()}>
-                    <Button variant="ghost" size="sm" className="floating-button">
+                    <Button variant="ghost" size="sm" className="floating-button w-full justify-start">
                       <User className="w-5 h-5 mr-2" />
                       Profile
                     </Button>
                   </Link>
+
+                  <Link href={getDashboardLink()}>
+                    <Button variant="ghost" size="sm" className="floating-button w-full justify-start">
+                      <Home className="w-5 h-5 mr-2" />
+                      Dashboard
+                    </Button>
+                  </Link>
+
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="floating-button w-full justify-start text-red-600 dark:text-red-400"
+                    onClick={() => {
+                      setIsOpen(false);
+                      // Handle logout logic here
+                      console.log('Logout clicked');
+                    }}
+                  >
+                    <X className="w-5 h-5 mr-2" />
+                    Logout
+                  </Button>
                 </div>
               )}
               
