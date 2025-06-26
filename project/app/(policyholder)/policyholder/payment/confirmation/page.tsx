@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { 
-  CheckCircle, 
-  Download, 
-  Home, 
-  FileText, 
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import {
+  CheckCircle,
+  Download,
+  Home,
+  FileText,
   Mail,
   Calendar,
   Clock,
@@ -27,9 +27,9 @@ import {
   CreditCard,
   Globe,
   Lock,
-  Award
-} from 'lucide-react';
-import Link from 'next/link';
+  Award,
+} from "lucide-react";
+import Link from "next/link";
 
 export default function PaymentConfirmation() {
   const searchParams = useSearchParams();
@@ -38,43 +38,51 @@ export default function PaymentConfirmation() {
 
   // Mock transaction data - in real app, this would come from payment processing
   const transactionData = {
-    id: 'TX-2024-001234',
-    blockHash: '0x742d35Cc6634C0532925a3b8D4C0532925a3b8D4',
-    amount: '0.72 ETH',
-    usdAmount: '$2,520.00',
-    paymentMethod: 'ETH',
+    id: "TX-2024-001234",
+    blockHash: "0x742d35Cc6634C0532925a3b8D4C0532925a3b8D4",
+    amount: "0.72 ETH",
+    usdAmount: "$2,520.00",
+    paymentMethod: "ETH",
     timestamp: new Date().toISOString(),
-    networkFee: '0.02 ETH',
-    status: 'confirmed',
-    confirmations: 12
+    networkFee: "0.02 ETH",
+    status: "confirmed",
+    confirmations: 12,
   };
 
   const policyData = {
-    id: 'POL-2024-5678',
-    name: 'Comprehensive Health Coverage',
-    category: 'health',
-    provider: 'HealthSecure',
-    coverage: '$100,000',
-    duration: '12 months',
+    id: "POL-2024-5678",
+    name: "Comprehensive Health Coverage",
+    category: "health",
+    provider: "HealthSecure",
+    coverage: "$100,000",
+    duration: "12 months",
     effectiveDate: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // Tomorrow
-    expiryDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString() // 1 year from now
+    expiryDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(), // 1 year from now
   };
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
-      case 'health': return Heart;
-      case 'travel': return Plane;
-      case 'crop': return Sprout;
-      default: return Shield;
+      case "health":
+        return Heart;
+      case "travel":
+        return Plane;
+      case "crop":
+        return Sprout;
+      default:
+        return Shield;
     }
   };
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'health': return 'from-red-500 to-pink-500';
-      case 'travel': return 'from-blue-500 to-cyan-500';
-      case 'crop': return 'from-green-500 to-emerald-500';
-      default: return 'from-slate-500 to-slate-600';
+      case "health":
+        return "from-red-500 to-pink-500";
+      case "travel":
+        return "from-blue-500 to-cyan-500";
+      case "crop":
+        return "from-green-500 to-emerald-500";
+      default:
+        return "from-slate-500 to-slate-600";
     }
   };
 
@@ -89,36 +97,40 @@ export default function PaymentConfirmation() {
   };
 
   const steps = [
-    { id: 1, name: 'Policy Selection', status: 'completed' },
-    { id: 2, name: 'Payment Details', status: 'completed' },
-    { id: 3, name: 'Confirmation', status: 'current' }
+    { id: 1, name: "Policy Selection", status: "completed" },
+    { id: 2, name: "Payment Details", status: "completed" },
+    { id: 3, name: "Confirmation", status: "current" },
   ];
 
   const nextSteps = [
     {
-      title: 'Policy Activation',
-      description: 'Your policy will be automatically activated within 24 hours',
+      title: "Policy Activation",
+      description:
+        "Your policy will be automatically activated within 24 hours",
       icon: Zap,
-      timeframe: 'Within 24 hours'
+      timeframe: "Within 24 hours",
     },
     {
-      title: 'Welcome Package',
-      description: 'You\'ll receive a welcome email with your policy documents and member ID',
+      title: "Welcome Package",
+      description:
+        "You'll receive a welcome email with your policy documents and member ID",
       icon: Mail,
-      timeframe: 'Within 1 hour'
+      timeframe: "Within 1 hour",
     },
     {
-      title: 'Digital Wallet',
-      description: 'Your policy NFT will be minted and sent to your connected wallet',
+      title: "Digital Wallet",
+      description:
+        "Your policy NFT will be minted and sent to your connected wallet",
       icon: Shield,
-      timeframe: 'Within 2 hours'
+      timeframe: "Within 2 hours",
     },
     {
-      title: 'Customer Support',
-      description: 'Our 24/7 support team is available for any questions or assistance',
+      title: "Customer Support",
+      description:
+        "Our 24/7 support team is available for any questions or assistance",
       icon: Bell,
-      timeframe: 'Available now'
-    }
+      timeframe: "Available now",
+    },
   ];
 
   const CategoryIcon = getCategoryIcon(policyData.category);
@@ -134,12 +146,13 @@ export default function PaymentConfirmation() {
             </div>
             <div className="absolute inset-0 rounded-full bg-gradient-to-r from-emerald-500 to-green-600 opacity-20 animate-ping"></div>
           </div>
-          
+
           <h1 className="text-4xl font-bold text-slate-800 dark:text-slate-100 mb-4">
             Payment Successful!
           </h1>
           <p className="text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
-            Your insurance policy has been purchased successfully. Welcome to BlockSecure!
+            Your insurance policy has been purchased successfully. Welcome to
+            BlockSecure!
           </p>
         </div>
 
@@ -149,17 +162,24 @@ export default function PaymentConfirmation() {
             <div className="flex items-center justify-between mb-4">
               {steps.map((step, index) => (
                 <div key={step.id} className="flex items-center">
-                  <div className={`flex items-center justify-center w-10 h-10 rounded-full ${
-                    step.status === 'completed' || step.status === 'current' ? 'bg-emerald-500 text-white' :
-                    'bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400'
-                  }`}>
+                  <div
+                    className={`flex items-center justify-center w-10 h-10 rounded-full ${
+                      step.status === "completed" || step.status === "current"
+                        ? "bg-emerald-500 text-white"
+                        : "bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400"
+                    }`}
+                  >
                     <CheckCircle className="w-5 h-5" />
                   </div>
-                  <span className={`ml-3 text-sm font-medium ${
-                    step.status === 'current' ? 'text-emerald-600 dark:text-emerald-400' :
-                    step.status === 'completed' ? 'text-emerald-600 dark:text-emerald-400' :
-                    'text-slate-500 dark:text-slate-400'
-                  }`}>
+                  <span
+                    className={`ml-3 text-sm font-medium ${
+                      step.status === "current"
+                        ? "text-emerald-600 dark:text-emerald-400"
+                        : step.status === "completed"
+                        ? "text-emerald-600 dark:text-emerald-400"
+                        : "text-slate-500 dark:text-slate-400"
+                    }`}
+                  >
                     {step.name}
                   </span>
                   {index < steps.length - 1 && (
@@ -187,34 +207,52 @@ export default function PaymentConfirmation() {
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center space-x-2">
                     <CheckCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                    <span className="font-medium text-emerald-800 dark:text-emerald-200">Payment Confirmed</span>
+                    <span className="font-medium text-emerald-800 dark:text-emerald-200">
+                      Payment Confirmed
+                    </span>
                   </div>
                   <Badge className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">
                     {transactionData.confirmations} confirmations
                   </Badge>
                 </div>
-                
+
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-slate-600 dark:text-slate-400">Amount Paid:</span>
+                    <span className="text-slate-600 dark:text-slate-400">
+                      Amount Paid:
+                    </span>
                     <div className="text-right">
-                      <p className="font-semibold text-slate-800 dark:text-slate-100">{transactionData.amount}</p>
-                      <p className="text-sm text-slate-500 dark:text-slate-400">{transactionData.usdAmount}</p>
+                      <p className="font-semibold text-slate-800 dark:text-slate-100">
+                        {transactionData.amount}
+                      </p>
+                      <p className="text-sm text-slate-500 dark:text-slate-400">
+                        {transactionData.usdAmount}
+                      </p>
                     </div>
                   </div>
-                  
+
                   <div className="flex justify-between items-center">
-                    <span className="text-slate-600 dark:text-slate-400">Payment Method:</span>
-                    <span className="font-medium text-slate-800 dark:text-slate-100">{transactionData.paymentMethod}</span>
+                    <span className="text-slate-600 dark:text-slate-400">
+                      Payment Method:
+                    </span>
+                    <span className="font-medium text-slate-800 dark:text-slate-100">
+                      {transactionData.paymentMethod}
+                    </span>
                   </div>
-                  
+
                   <div className="flex justify-between items-center">
-                    <span className="text-slate-600 dark:text-slate-400">Network Fee:</span>
-                    <span className="font-medium text-slate-800 dark:text-slate-100">{transactionData.networkFee}</span>
+                    <span className="text-slate-600 dark:text-slate-400">
+                      Network Fee:
+                    </span>
+                    <span className="font-medium text-slate-800 dark:text-slate-100">
+                      {transactionData.networkFee}
+                    </span>
                   </div>
-                  
+
                   <div className="flex justify-between items-center">
-                    <span className="text-slate-600 dark:text-slate-400">Transaction Date:</span>
+                    <span className="text-slate-600 dark:text-slate-400">
+                      Transaction Date:
+                    </span>
                     <span className="font-medium text-slate-800 dark:text-slate-100">
                       {new Date(transactionData.timestamp).toLocaleDateString()}
                     </span>
@@ -282,40 +320,64 @@ export default function PaymentConfirmation() {
               {/* Policy Card */}
               <div className="p-4 bg-slate-50/50 dark:bg-slate-700/30 rounded-xl">
                 <div className="flex items-center space-x-3 mb-4">
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-r ${getCategoryColor(policyData.category)} flex items-center justify-center`}>
+                  <div
+                    className={`w-12 h-12 rounded-xl bg-gradient-to-r ${getCategoryColor(
+                      policyData.category
+                    )} flex items-center justify-center`}
+                  >
                     <CategoryIcon className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-slate-800 dark:text-slate-100">{policyData.name}</h3>
-                    <p className="text-sm text-slate-600 dark:text-slate-400">{policyData.provider}</p>
+                    <h3 className="font-semibold text-slate-800 dark:text-slate-100">
+                      {policyData.name}
+                    </h3>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                      {policyData.provider}
+                    </p>
                   </div>
                 </div>
-                
+
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-slate-600 dark:text-slate-400">Policy ID:</span>
-                    <span className="font-medium text-slate-800 dark:text-slate-100">{policyData.id}</span>
+                    <span className="text-slate-600 dark:text-slate-400">
+                      Policy ID:
+                    </span>
+                    <span className="font-medium text-slate-800 dark:text-slate-100">
+                      {policyData.id}
+                    </span>
                   </div>
-                  
+
                   <div className="flex justify-between items-center">
-                    <span className="text-slate-600 dark:text-slate-400">Coverage:</span>
-                    <span className="font-medium text-slate-800 dark:text-slate-100">{policyData.coverage}</span>
+                    <span className="text-slate-600 dark:text-slate-400">
+                      Coverage:
+                    </span>
+                    <span className="font-medium text-slate-800 dark:text-slate-100">
+                      {policyData.coverage}
+                    </span>
                   </div>
-                  
+
                   <div className="flex justify-between items-center">
-                    <span className="text-slate-600 dark:text-slate-400">Duration:</span>
-                    <span className="font-medium text-slate-800 dark:text-slate-100">{policyData.duration}</span>
+                    <span className="text-slate-600 dark:text-slate-400">
+                      Duration:
+                    </span>
+                    <span className="font-medium text-slate-800 dark:text-slate-100">
+                      {policyData.duration}
+                    </span>
                   </div>
-                  
+
                   <div className="flex justify-between items-center">
-                    <span className="text-slate-600 dark:text-slate-400">Effective Date:</span>
+                    <span className="text-slate-600 dark:text-slate-400">
+                      Effective Date:
+                    </span>
                     <span className="font-medium text-slate-800 dark:text-slate-100">
                       {new Date(policyData.effectiveDate).toLocaleDateString()}
                     </span>
                   </div>
-                  
+
                   <div className="flex justify-between items-center">
-                    <span className="text-slate-600 dark:text-slate-400">Expiry Date:</span>
+                    <span className="text-slate-600 dark:text-slate-400">
+                      Expiry Date:
+                    </span>
                     <span className="font-medium text-slate-800 dark:text-slate-100">
                       {new Date(policyData.expiryDate).toLocaleDateString()}
                     </span>
@@ -345,14 +407,24 @@ export default function PaymentConfirmation() {
           <CardContent>
             <div className="grid md:grid-cols-2 gap-6">
               {nextSteps.map((step, index) => (
-                <div key={index} className="flex items-start space-x-4 p-4 bg-slate-50/50 dark:bg-slate-700/30 rounded-xl">
+                <div
+                  key={index}
+                  className="flex items-start space-x-4 p-4 bg-slate-50/50 dark:bg-slate-700/30 rounded-xl"
+                >
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 flex items-center justify-center flex-shrink-0">
                     <step.icon className="w-5 h-5 text-white" />
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-semibold text-slate-800 dark:text-slate-100 mb-1">{step.title}</h4>
-                    <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">{step.description}</p>
-                    <Badge variant="secondary" className="text-xs bg-slate-200 dark:bg-slate-600/50 text-slate-700 dark:text-slate-300">
+                    <h4 className="font-semibold text-slate-800 dark:text-slate-100 mb-1">
+                      {step.title}
+                    </h4>
+                    <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">
+                      {step.description}
+                    </p>
+                    <Badge
+                      variant="secondary"
+                      className="text-xs bg-slate-200 dark:bg-slate-600/50 text-slate-700 dark:text-slate-300"
+                    >
                       <Clock className="w-3 h-3 mr-1" />
                       {step.timeframe}
                     </Badge>
@@ -371,12 +443,12 @@ export default function PaymentConfirmation() {
               Return to Dashboard
             </Button>
           </Link>
-          
+
           <Button variant="outline" className="flex-1 floating-button">
             <Download className="w-4 h-4 mr-2" />
             Download Receipt
           </Button>
-          
+
           <Link href="/policyholder/coverage" className="flex-1">
             <Button variant="outline" className="w-full floating-button">
               <FileText className="w-4 h-4 mr-2" />
@@ -393,7 +465,8 @@ export default function PaymentConfirmation() {
                 Need Help?
               </h3>
               <p className="text-slate-600 dark:text-slate-400 mb-4">
-                Our customer support team is available 24/7 to assist you with any questions.
+                Our customer support team is available 24/7 to assist you with
+                any questions.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button variant="outline" className="floating-button">

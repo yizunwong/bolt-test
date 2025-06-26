@@ -1,46 +1,73 @@
-'use client';
+"use client";
 
-import { useState, useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Pagination } from '@/components/shared/Pagination';
-import { Heart, Plane, Sprout, Shield, Search, Filter, Star } from 'lucide-react';
-import { policyCategories, policies } from '@/public/data/policyholder/browseData';
-import PolicyDetailsDialog, { Policy } from '@/components/shared/PolicyDetailsDialog';
-import Link from 'next/link';
-import { logEvent } from '@/lib/analytics';
+import { useState, useMemo } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Pagination } from "@/components/shared/Pagination";
+import {
+  Heart,
+  Plane,
+  Sprout,
+  Shield,
+  Search,
+  Filter,
+  Star,
+} from "lucide-react";
+import {
+  policyCategories,
+  policies,
+} from "@/public/data/policyholder/browseData";
+import PolicyDetailsDialog, {
+  Policy,
+} from "@/components/shared/PolicyDetailsDialog";
+import Link from "next/link";
+import { logEvent } from "@/lib/analytics";
 
 const ITEMS_PER_PAGE = 6;
 
 export default function BrowsePolicies() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [sortBy, setSortBy] = useState('popular');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [sortBy, setSortBy] = useState("popular");
   const [currentPage, setCurrentPage] = useState(1);
   const [showDetails, setShowDetails] = useState(false);
   const [selectedPolicy, setSelectedPolicy] = useState<Policy | null>(null);
   const filteredPolicies = useMemo(() => {
-    let filtered = policies.filter(policy => {
-      const matchesSearch = policy.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           policy.description.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesCategory = selectedCategory === 'all' || policy.category === selectedCategory;
+    let filtered = policies.filter((policy) => {
+      const matchesSearch =
+        policy.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        policy.description.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory =
+        selectedCategory === "all" || policy.category === selectedCategory;
       return matchesSearch && matchesCategory;
     });
 
     // Sort policies
     filtered.sort((a, b) => {
       switch (sortBy) {
-        case 'popular':
+        case "popular":
           return b.popular ? 1 : -1;
-        case 'rating':
+        case "rating":
           return b.rating - a.rating;
-        case 'price-low':
-          return parseFloat(a.premium.split(' ')[0]) - parseFloat(b.premium.split(' ')[0]);
-        case 'price-high':
-          return parseFloat(b.premium.split(' ')[0]) - parseFloat(a.premium.split(' ')[0]);
+        case "price-low":
+          return (
+            parseFloat(a.premium.split(" ")[0]) -
+            parseFloat(b.premium.split(" ")[0])
+          );
+        case "price-high":
+          return (
+            parseFloat(b.premium.split(" ")[0]) -
+            parseFloat(a.premium.split(" ")[0])
+          );
         default:
           return 0;
       }
@@ -64,12 +91,12 @@ export default function BrowsePolicies() {
   const openDetails = (policy: Policy) => {
     setSelectedPolicy(policy);
     setShowDetails(true);
-    logEvent('open_policy_details', policy.id);
+    logEvent("open_policy_details", policy.id);
   };
 
   const closeDetails = () => {
     setShowDetails(false);
-    if (selectedPolicy) logEvent('close_policy_details', selectedPolicy.id);
+    if (selectedPolicy) logEvent("close_policy_details", selectedPolicy.id);
   };
 
   return (
@@ -83,7 +110,9 @@ export default function BrowsePolicies() {
             </div>
             <div>
               <h1 className="page-header-title">Browse Insurance Policies</h1>
-              <p className="page-header-subtitle">Discover and purchase blockchain-secured insurance coverage</p>
+              <p className="page-header-subtitle">
+                Discover and purchase blockchain-secured insurance coverage
+              </p>
             </div>
           </div>
         </div>
@@ -91,21 +120,30 @@ export default function BrowsePolicies() {
         {/* Policy Categories */}
         <div className="grid md:grid-cols-3 gap-6 mb-8">
           {policyCategories.map((category) => (
-            <Card 
+            <Card
               key={category.id}
               className={`glass-card rounded-2xl cursor-pointer card-hover ${
-                selectedCategory === category.id ? 'ring-2 ring-emerald-500' : ''
+                selectedCategory === category.id
+                  ? "ring-2 ring-emerald-500"
+                  : ""
               }`}
-              onClick={() => handleFilterChange(() => setSelectedCategory(category.id))}
+              onClick={() =>
+                handleFilterChange(() => setSelectedCategory(category.id))
+              }
             >
               <CardContent className="flex items-center p-6">
-                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${category.color} flex items-center justify-center mr-4`}>
+                <div
+                  className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${category.color} flex items-center justify-center mr-4`}
+                >
                   <category.icon className="w-8 h-8 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">{category.name}</h3>
+                  <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
+                    {category.name}
+                  </h3>
                   <p className="text-sm text-slate-600 dark:text-slate-400">
-                    {policies.filter(p => p.category === category.id).length} policies available
+                    {policies.filter((p) => p.category === category.id).length}{" "}
+                    policies available
                   </p>
                 </div>
               </CardContent>
@@ -122,11 +160,18 @@ export default function BrowsePolicies() {
                 <Input
                   placeholder="Search policies..."
                   value={searchTerm}
-                  onChange={(e) => handleFilterChange(() => setSearchTerm(e.target.value))}
+                  onChange={(e) =>
+                    handleFilterChange(() => setSearchTerm(e.target.value))
+                  }
                   className="form-input pl-10"
                 />
               </div>
-              <Select value={selectedCategory} onValueChange={(value) => handleFilterChange(() => setSelectedCategory(value))}>
+              <Select
+                value={selectedCategory}
+                onValueChange={(value) =>
+                  handleFilterChange(() => setSelectedCategory(value))
+                }
+              >
                 <SelectTrigger className="w-full md:w-48 form-input">
                   <Filter className="w-4 h-4 mr-2" />
                   <SelectValue placeholder="Category" />
@@ -138,7 +183,12 @@ export default function BrowsePolicies() {
                   <SelectItem value="crop">Crop Insurance</SelectItem>
                 </SelectContent>
               </Select>
-              <Select value={sortBy} onValueChange={(value) => handleFilterChange(() => setSortBy(value))}>
+              <Select
+                value={sortBy}
+                onValueChange={(value) =>
+                  handleFilterChange(() => setSortBy(value))
+                }
+              >
                 <SelectTrigger className="w-full md:w-48 form-input">
                   <SelectValue placeholder="Sort by" />
                 </SelectTrigger>
@@ -156,9 +206,14 @@ export default function BrowsePolicies() {
         {/* Results Summary */}
         <div className="mb-6">
           <p className="text-slate-600 dark:text-slate-400">
-            Showing {paginatedPolicies.length} of {filteredPolicies.length} policies
-            {selectedCategory !== 'all' && (
-              <span> in {policyCategories.find(c => c.id === selectedCategory)?.name}</span>
+            Showing {paginatedPolicies.length} of {filteredPolicies.length}{" "}
+            policies
+            {selectedCategory !== "all" && (
+              <span>
+                {" "}
+                in{" "}
+                {policyCategories.find((c) => c.id === selectedCategory)?.name}
+              </span>
             )}
           </p>
         </div>
@@ -166,7 +221,9 @@ export default function BrowsePolicies() {
         {/* Policy Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {paginatedPolicies.map((policy) => {
-            const categoryInfo = policyCategories.find(cat => cat.id === policy.category);
+            const categoryInfo = policyCategories.find(
+              (cat) => cat.id === policy.category
+            );
             return (
               <Card
                 key={policy.id}
@@ -291,13 +348,21 @@ export default function BrowsePolicies() {
         {filteredPolicies.length === 0 && (
           <div className="text-center py-12">
             <Shield className="w-16 h-16 text-slate-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-slate-600 dark:text-slate-400 mb-2">No policies found</h3>
-            <p className="text-slate-500 dark:text-slate-500">Try adjusting your search criteria</p>
+            <h3 className="text-xl font-semibold text-slate-600 dark:text-slate-400 mb-2">
+              No policies found
+            </h3>
+            <p className="text-slate-500 dark:text-slate-500">
+              Try adjusting your search criteria
+            </p>
           </div>
         )}
 
         {selectedPolicy && (
-          <PolicyDetailsDialog policy={selectedPolicy} open={showDetails} onClose={closeDetails} />
+          <PolicyDetailsDialog
+            policy={selectedPolicy}
+            open={showDetails}
+            onClose={closeDetails}
+          />
         )}
       </div>
     </div>

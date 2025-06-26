@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
-  User, 
-  Shield, 
-  Bell, 
-  Lock, 
-  Camera, 
-  CheckCircle, 
+  User,
+  Shield,
+  Bell,
+  Lock,
+  Camera,
+  CheckCircle,
   AlertTriangle,
   Edit,
   Save,
@@ -35,16 +35,16 @@ import {
   Code,
   Database,
   Monitor,
-  Settings
-} from 'lucide-react';
+  Settings,
+} from "lucide-react";
 import {
   profileData as initialProfileData,
   notifications as initialNotifications,
   systemStats,
   activityLog,
   systemPermissions,
-  securitySettings
-} from '@/public/data/system-admin/profileData';
+  securitySettings,
+} from "@/public/data/system-admin/profileData";
 
 export default function SystemAdminProfile() {
   const [isEditing, setIsEditing] = useState(false);
@@ -74,7 +74,9 @@ export default function SystemAdminProfile() {
             </div>
             <div>
               <h1 className="page-header-title">System Admin Profile</h1>
-              <p className="page-header-subtitle">Manage your system administrator account and security settings</p>
+              <p className="page-header-subtitle">
+                Manage your system administrator account and security settings
+              </p>
             </div>
           </div>
         </div>
@@ -88,7 +90,8 @@ export default function SystemAdminProfile() {
                   <Avatar className="w-24 h-24 mx-auto">
                     <AvatarImage src="/api/placeholder/96/96" alt="Profile" />
                     <AvatarFallback className="text-2xl bg-gradient-to-r from-purple-500 to-indigo-500 text-white">
-                      {profileData.firstName[0]}{profileData.lastName[0]}
+                      {profileData.firstName[0]}
+                      {profileData.lastName[0]}
                     </AvatarFallback>
                   </Avatar>
                   <Button
@@ -101,8 +104,12 @@ export default function SystemAdminProfile() {
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-100 mb-1">
                   {profileData.firstName} {profileData.lastName}
                 </h3>
-                <p className="text-slate-600 dark:text-slate-400 mb-2">{profileData.position}</p>
-                <p className="text-sm text-slate-500 dark:text-slate-500 mb-4">{profileData.company}</p>
+                <p className="text-slate-600 dark:text-slate-400 mb-2">
+                  {profileData.position}
+                </p>
+                <p className="text-sm text-slate-500 dark:text-slate-500 mb-4">
+                  {profileData.company}
+                </p>
                 <div className="space-y-2">
                   <Badge className="status-badge bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400">
                     <Crown className="w-3 h-3 mr-1" />
@@ -119,24 +126,42 @@ export default function SystemAdminProfile() {
             {/* System Stats */}
             <Card className="glass-card rounded-2xl mt-6">
               <CardHeader>
-                <CardTitle className="text-lg text-slate-800 dark:text-slate-100">System Overview</CardTitle>
+                <CardTitle className="text-lg text-slate-800 dark:text-slate-100">
+                  System Overview
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-600 dark:text-slate-400">System Uptime</span>
-                  <span className="font-semibold text-emerald-600 dark:text-emerald-400">{systemStats.systemUptime}</span>
+                  <span className="text-slate-600 dark:text-slate-400">
+                    System Uptime
+                  </span>
+                  <span className="font-semibold text-emerald-600 dark:text-emerald-400">
+                    {systemStats.systemUptime}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-600 dark:text-slate-400">Users Managed</span>
-                  <span className="font-semibold text-slate-800 dark:text-slate-100">{systemStats.usersManaged}</span>
+                  <span className="text-slate-600 dark:text-slate-400">
+                    Users Managed
+                  </span>
+                  <span className="font-semibold text-slate-800 dark:text-slate-100">
+                    {systemStats.usersManaged}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-600 dark:text-slate-400">Contracts Deployed</span>
-                  <span className="font-semibold text-slate-800 dark:text-slate-100">{systemStats.contractsDeployed}</span>
+                  <span className="text-slate-600 dark:text-slate-400">
+                    Contracts Deployed
+                  </span>
+                  <span className="font-semibold text-slate-800 dark:text-slate-100">
+                    {systemStats.contractsDeployed}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-600 dark:text-slate-400">Security Incidents</span>
-                  <span className="font-semibold text-emerald-600 dark:text-emerald-400">{systemStats.securityIncidents}</span>
+                  <span className="text-slate-600 dark:text-slate-400">
+                    Security Incidents
+                  </span>
+                  <span className="font-semibold text-emerald-600 dark:text-emerald-400">
+                    {systemStats.securityIncidents}
+                  </span>
                 </div>
               </CardContent>
             </Card>
@@ -146,17 +171,29 @@ export default function SystemAdminProfile() {
           <div className="lg:col-span-3">
             <Tabs defaultValue="personal" className="space-y-6">
               <TabsList className="grid w-full grid-cols-5 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
-                <TabsTrigger value="personal" className="rounded-lg">Personal</TabsTrigger>
-                <TabsTrigger value="permissions" className="rounded-lg">Permissions</TabsTrigger>
-                <TabsTrigger value="security" className="rounded-lg">Security</TabsTrigger>
-                <TabsTrigger value="notifications" className="rounded-lg">Notifications</TabsTrigger>
-                <TabsTrigger value="activity" className="rounded-lg">Activity</TabsTrigger>
+                <TabsTrigger value="personal" className="rounded-lg">
+                  Personal
+                </TabsTrigger>
+                <TabsTrigger value="permissions" className="rounded-lg">
+                  Permissions
+                </TabsTrigger>
+                <TabsTrigger value="security" className="rounded-lg">
+                  Security
+                </TabsTrigger>
+                <TabsTrigger value="notifications" className="rounded-lg">
+                  Notifications
+                </TabsTrigger>
+                <TabsTrigger value="activity" className="rounded-lg">
+                  Activity
+                </TabsTrigger>
               </TabsList>
 
               <TabsContent value="personal">
                 <Card className="glass-card rounded-2xl">
                   <CardHeader className="flex flex-row items-center justify-between">
-                    <CardTitle className="text-xl text-slate-800 dark:text-slate-100">Personal Information</CardTitle>
+                    <CardTitle className="text-xl text-slate-800 dark:text-slate-100">
+                      Personal Information
+                    </CardTitle>
                     {!isEditing ? (
                       <Button
                         variant="outline"
@@ -194,7 +231,12 @@ export default function SystemAdminProfile() {
                         </label>
                         <Input
                           value={profileData.firstName}
-                          onChange={(e) => setProfileData({...profileData, firstName: e.target.value})}
+                          onChange={(e) =>
+                            setProfileData({
+                              ...profileData,
+                              firstName: e.target.value,
+                            })
+                          }
                           disabled={!isEditing}
                           className="form-input"
                         />
@@ -205,7 +247,12 @@ export default function SystemAdminProfile() {
                         </label>
                         <Input
                           value={profileData.lastName}
-                          onChange={(e) => setProfileData({...profileData, lastName: e.target.value})}
+                          onChange={(e) =>
+                            setProfileData({
+                              ...profileData,
+                              lastName: e.target.value,
+                            })
+                          }
                           disabled={!isEditing}
                           className="form-input"
                         />
@@ -219,7 +266,12 @@ export default function SystemAdminProfile() {
                         </label>
                         <Input
                           value={profileData.email}
-                          onChange={(e) => setProfileData({...profileData, email: e.target.value})}
+                          onChange={(e) =>
+                            setProfileData({
+                              ...profileData,
+                              email: e.target.value,
+                            })
+                          }
                           disabled={!isEditing}
                           className="form-input"
                         />
@@ -230,7 +282,12 @@ export default function SystemAdminProfile() {
                         </label>
                         <Input
                           value={profileData.phone}
-                          onChange={(e) => setProfileData({...profileData, phone: e.target.value})}
+                          onChange={(e) =>
+                            setProfileData({
+                              ...profileData,
+                              phone: e.target.value,
+                            })
+                          }
                           disabled={!isEditing}
                           className="form-input"
                         />
@@ -243,7 +300,12 @@ export default function SystemAdminProfile() {
                       </label>
                       <Input
                         value={profileData.address}
-                        onChange={(e) => setProfileData({...profileData, address: e.target.value})}
+                        onChange={(e) =>
+                          setProfileData({
+                            ...profileData,
+                            address: e.target.value,
+                          })
+                        }
                         disabled={!isEditing}
                         className="form-input"
                       />
@@ -256,7 +318,12 @@ export default function SystemAdminProfile() {
                         </label>
                         <Input
                           value={profileData.position}
-                          onChange={(e) => setProfileData({...profileData, position: e.target.value})}
+                          onChange={(e) =>
+                            setProfileData({
+                              ...profileData,
+                              position: e.target.value,
+                            })
+                          }
                           disabled={!isEditing}
                           className="form-input"
                         />
@@ -267,7 +334,12 @@ export default function SystemAdminProfile() {
                         </label>
                         <Input
                           value={profileData.department}
-                          onChange={(e) => setProfileData({...profileData, department: e.target.value})}
+                          onChange={(e) =>
+                            setProfileData({
+                              ...profileData,
+                              department: e.target.value,
+                            })
+                          }
                           disabled={!isEditing}
                           className="form-input"
                         />
@@ -303,7 +375,12 @@ export default function SystemAdminProfile() {
                       </label>
                       <Textarea
                         value={profileData.bio}
-                        onChange={(e) => setProfileData({...profileData, bio: e.target.value})}
+                        onChange={(e) =>
+                          setProfileData({
+                            ...profileData,
+                            bio: e.target.value,
+                          })
+                        }
                         disabled={!isEditing}
                         className="form-input min-h-[100px]"
                       />
@@ -315,13 +392,20 @@ export default function SystemAdminProfile() {
               <TabsContent value="permissions">
                 <Card className="glass-card rounded-2xl">
                   <CardHeader>
-                    <CardTitle className="text-xl text-slate-800 dark:text-slate-100">System Permissions</CardTitle>
-                    <p className="text-slate-600 dark:text-slate-400">Your system administrator access permissions</p>
+                    <CardTitle className="text-xl text-slate-800 dark:text-slate-100">
+                      System Permissions
+                    </CardTitle>
+                    <p className="text-slate-600 dark:text-slate-400">
+                      Your system administrator access permissions
+                    </p>
                   </CardHeader>
                   <CardContent>
                     <div className="grid md:grid-cols-2 gap-4">
                       {systemPermissions.map((permission, index) => (
-                        <div key={index} className="flex items-center justify-between p-4 bg-slate-50/50 dark:bg-slate-700/30 rounded-xl">
+                        <div
+                          key={index}
+                          className="flex items-center justify-between p-4 bg-slate-50/50 dark:bg-slate-700/30 rounded-xl"
+                        >
                           <div className="flex items-center space-x-3">
                             <CheckCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                             <span className="font-medium text-slate-800 dark:text-slate-100">
@@ -341,19 +425,28 @@ export default function SystemAdminProfile() {
               <TabsContent value="security">
                 <Card className="glass-card rounded-2xl">
                   <CardHeader>
-                    <CardTitle className="text-xl text-slate-800 dark:text-slate-100">Security Settings</CardTitle>
-                    <p className="text-slate-600 dark:text-slate-400">Critical security configurations and protocols</p>
+                    <CardTitle className="text-xl text-slate-800 dark:text-slate-100">
+                      Security Settings
+                    </CardTitle>
+                    <p className="text-slate-600 dark:text-slate-400">
+                      Critical security configurations and protocols
+                    </p>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
                       {securitySettings.map((setting, index) => (
-                        <div key={index} className="flex items-center justify-between p-4 bg-slate-50/50 dark:bg-slate-700/30 rounded-xl">
+                        <div
+                          key={index}
+                          className="flex items-center justify-between p-4 bg-slate-50/50 dark:bg-slate-700/30 rounded-xl"
+                        >
                           <div className="flex items-center space-x-3">
-                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                              setting.critical 
-                                ? 'bg-gradient-to-r from-red-500 to-pink-500' 
-                                : 'bg-gradient-to-r from-blue-500 to-cyan-500'
-                            }`}>
+                            <div
+                              className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                                setting.critical
+                                  ? "bg-gradient-to-r from-red-500 to-pink-500"
+                                  : "bg-gradient-to-r from-blue-500 to-cyan-500"
+                              }`}
+                            >
                               {setting.critical ? (
                                 <Shield className="w-5 h-5 text-white" />
                               ) : (
@@ -361,9 +454,13 @@ export default function SystemAdminProfile() {
                               )}
                             </div>
                             <div>
-                              <p className="font-medium text-slate-800 dark:text-slate-100">{setting.name}</p>
+                              <p className="font-medium text-slate-800 dark:text-slate-100">
+                                {setting.name}
+                              </p>
                               {setting.value && (
-                                <p className="text-sm text-slate-600 dark:text-slate-400">{setting.value}</p>
+                                <p className="text-sm text-slate-600 dark:text-slate-400">
+                                  {setting.value}
+                                </p>
                               )}
                             </div>
                           </div>
@@ -373,11 +470,14 @@ export default function SystemAdminProfile() {
                                 Critical
                               </Badge>
                             )}
-                            <Badge className={`status-badge ${
-                              setting.status === 'enabled' || setting.status === 'active' 
-                                ? 'status-active' 
-                                : 'status-pending'
-                            }`}>
+                            <Badge
+                              className={`status-badge ${
+                                setting.status === "enabled" ||
+                                setting.status === "active"
+                                  ? "status-active"
+                                  : "status-pending"
+                              }`}
+                            >
                               {setting.status}
                             </Badge>
                           </div>
@@ -391,30 +491,61 @@ export default function SystemAdminProfile() {
               <TabsContent value="notifications">
                 <Card className="glass-card rounded-2xl">
                   <CardHeader>
-                    <CardTitle className="text-xl text-slate-800 dark:text-slate-100">System Notifications</CardTitle>
-                    <p className="text-slate-600 dark:text-slate-400">Configure system and security alert preferences</p>
+                    <CardTitle className="text-xl text-slate-800 dark:text-slate-100">
+                      System Notifications
+                    </CardTitle>
+                    <p className="text-slate-600 dark:text-slate-400">
+                      Configure system and security alert preferences
+                    </p>
                   </CardHeader>
                   <CardContent className="space-y-6">
                     <div>
-                      <h4 className="font-semibold text-slate-800 dark:text-slate-100 mb-4">Email Notifications</h4>
+                      <h4 className="font-semibold text-slate-800 dark:text-slate-100 mb-4">
+                        Email Notifications
+                      </h4>
                       <div className="space-y-3">
                         {[
-                          { key: 'emailSecurity', label: 'Security alerts and incidents' },
-                          { key: 'emailSystem', label: 'System status and maintenance' },
-                          { key: 'emailUsers', label: 'User management activities' }
+                          {
+                            key: "emailSecurity",
+                            label: "Security alerts and incidents",
+                          },
+                          {
+                            key: "emailSystem",
+                            label: "System status and maintenance",
+                          },
+                          {
+                            key: "emailUsers",
+                            label: "User management activities",
+                          },
                         ].map(({ key, label }) => (
-                          <div key={key} className="flex items-center justify-between p-3 bg-slate-50/50 dark:bg-slate-700/30 rounded-lg">
-                            <span className="text-slate-700 dark:text-slate-300">{label}</span>
+                          <div
+                            key={key}
+                            className="flex items-center justify-between p-3 bg-slate-50/50 dark:bg-slate-700/30 rounded-lg"
+                          >
+                            <span className="text-slate-700 dark:text-slate-300">
+                              {label}
+                            </span>
                             <Button
-                              variant={notifications[key as keyof typeof notifications] ? "default" : "outline"}
+                              variant={
+                                notifications[key as keyof typeof notifications]
+                                  ? "default"
+                                  : "outline"
+                              }
                               size="sm"
-                              onClick={() => setNotifications({
-                                ...notifications,
-                                [key]: !notifications[key as keyof typeof notifications]
-                              })}
+                              onClick={() =>
+                                setNotifications({
+                                  ...notifications,
+                                  [key]:
+                                    !notifications[
+                                      key as keyof typeof notifications
+                                    ],
+                                })
+                              }
                               className="floating-button"
                             >
-                              {notifications[key as keyof typeof notifications] ? 'On' : 'Off'}
+                              {notifications[key as keyof typeof notifications]
+                                ? "On"
+                                : "Off"}
                             </Button>
                           </div>
                         ))}
@@ -422,25 +553,49 @@ export default function SystemAdminProfile() {
                     </div>
 
                     <div>
-                      <h4 className="font-semibold text-slate-800 dark:text-slate-100 mb-4">Push Notifications</h4>
+                      <h4 className="font-semibold text-slate-800 dark:text-slate-100 mb-4">
+                        Push Notifications
+                      </h4>
                       <div className="space-y-3">
                         {[
-                          { key: 'pushSecurity', label: 'Critical security alerts' },
-                          { key: 'pushSystem', label: 'System downtime and errors' },
-                          { key: 'pushUsers', label: 'User access violations' }
+                          {
+                            key: "pushSecurity",
+                            label: "Critical security alerts",
+                          },
+                          {
+                            key: "pushSystem",
+                            label: "System downtime and errors",
+                          },
+                          { key: "pushUsers", label: "User access violations" },
                         ].map(({ key, label }) => (
-                          <div key={key} className="flex items-center justify-between p-3 bg-slate-50/50 dark:bg-slate-700/30 rounded-lg">
-                            <span className="text-slate-700 dark:text-slate-300">{label}</span>
+                          <div
+                            key={key}
+                            className="flex items-center justify-between p-3 bg-slate-50/50 dark:bg-slate-700/30 rounded-lg"
+                          >
+                            <span className="text-slate-700 dark:text-slate-300">
+                              {label}
+                            </span>
                             <Button
-                              variant={notifications[key as keyof typeof notifications] ? "default" : "outline"}
+                              variant={
+                                notifications[key as keyof typeof notifications]
+                                  ? "default"
+                                  : "outline"
+                              }
                               size="sm"
-                              onClick={() => setNotifications({
-                                ...notifications,
-                                [key]: !notifications[key as keyof typeof notifications]
-                              })}
+                              onClick={() =>
+                                setNotifications({
+                                  ...notifications,
+                                  [key]:
+                                    !notifications[
+                                      key as keyof typeof notifications
+                                    ],
+                                })
+                              }
                               className="floating-button"
                             >
-                              {notifications[key as keyof typeof notifications] ? 'On' : 'Off'}
+                              {notifications[key as keyof typeof notifications]
+                                ? "On"
+                                : "Off"}
                             </Button>
                           </div>
                         ))}
@@ -448,20 +603,28 @@ export default function SystemAdminProfile() {
                     </div>
 
                     <div>
-                      <h4 className="font-semibold text-slate-800 dark:text-slate-100 mb-4">Emergency Notifications</h4>
+                      <h4 className="font-semibold text-slate-800 dark:text-slate-100 mb-4">
+                        Emergency Notifications
+                      </h4>
                       <div className="space-y-3">
                         <div className="flex items-center justify-between p-3 bg-red-50/50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
-                          <span className="text-red-700 dark:text-red-300">Emergency SMS alerts</span>
+                          <span className="text-red-700 dark:text-red-300">
+                            Emergency SMS alerts
+                          </span>
                           <Button
-                            variant={notifications.smsEmergency ? "default" : "outline"}
+                            variant={
+                              notifications.smsEmergency ? "default" : "outline"
+                            }
                             size="sm"
-                            onClick={() => setNotifications({
-                              ...notifications,
-                              smsEmergency: !notifications.smsEmergency
-                            })}
+                            onClick={() =>
+                              setNotifications({
+                                ...notifications,
+                                smsEmergency: !notifications.smsEmergency,
+                              })
+                            }
                             className="floating-button"
                           >
-                            {notifications.smsEmergency ? 'On' : 'Off'}
+                            {notifications.smsEmergency ? "On" : "Off"}
                           </Button>
                         </div>
                       </div>
@@ -473,27 +636,51 @@ export default function SystemAdminProfile() {
               <TabsContent value="activity">
                 <Card className="glass-card rounded-2xl">
                   <CardHeader>
-                    <CardTitle className="text-xl text-slate-800 dark:text-slate-100">System Activity Log</CardTitle>
-                    <p className="text-slate-600 dark:text-slate-400">Recent system administration activities</p>
+                    <CardTitle className="text-xl text-slate-800 dark:text-slate-100">
+                      System Activity Log
+                    </CardTitle>
+                    <p className="text-slate-600 dark:text-slate-400">
+                      Recent system administration activities
+                    </p>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
                       {activityLog.map((activity, index) => (
-                        <div key={index} className="flex items-center space-x-4 p-4 bg-slate-50/50 dark:bg-slate-700/30 rounded-xl">
-                          <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                            activity.type === 'system' ? 'bg-gradient-to-r from-blue-500 to-cyan-500' :
-                            activity.type === 'user' ? 'bg-gradient-to-r from-emerald-500 to-green-600' :
-                            activity.type === 'contract' ? 'bg-gradient-to-r from-purple-500 to-indigo-500' :
-                            'bg-gradient-to-r from-red-500 to-pink-500'
-                          }`}>
-                            {activity.type === 'system' && <Monitor className="w-5 h-5 text-white" />}
-                            {activity.type === 'user' && <Users className="w-5 h-5 text-white" />}
-                            {activity.type === 'contract' && <Code className="w-5 h-5 text-white" />}
-                            {activity.type === 'security' && <Shield className="w-5 h-5 text-white" />}
+                        <div
+                          key={index}
+                          className="flex items-center space-x-4 p-4 bg-slate-50/50 dark:bg-slate-700/30 rounded-xl"
+                        >
+                          <div
+                            className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                              activity.type === "system"
+                                ? "bg-gradient-to-r from-blue-500 to-cyan-500"
+                                : activity.type === "user"
+                                ? "bg-gradient-to-r from-emerald-500 to-green-600"
+                                : activity.type === "contract"
+                                ? "bg-gradient-to-r from-purple-500 to-indigo-500"
+                                : "bg-gradient-to-r from-red-500 to-pink-500"
+                            }`}
+                          >
+                            {activity.type === "system" && (
+                              <Monitor className="w-5 h-5 text-white" />
+                            )}
+                            {activity.type === "user" && (
+                              <Users className="w-5 h-5 text-white" />
+                            )}
+                            {activity.type === "contract" && (
+                              <Code className="w-5 h-5 text-white" />
+                            )}
+                            {activity.type === "security" && (
+                              <Shield className="w-5 h-5 text-white" />
+                            )}
                           </div>
                           <div className="flex-1">
-                            <p className="font-medium text-slate-800 dark:text-slate-100">{activity.action}</p>
-                            <p className="text-sm text-slate-600 dark:text-slate-400">{new Date(activity.date).toLocaleDateString()}</p>
+                            <p className="font-medium text-slate-800 dark:text-slate-100">
+                              {activity.action}
+                            </p>
+                            <p className="text-sm text-slate-600 dark:text-slate-400">
+                              {new Date(activity.date).toLocaleDateString()}
+                            </p>
                           </div>
                         </div>
                       ))}
