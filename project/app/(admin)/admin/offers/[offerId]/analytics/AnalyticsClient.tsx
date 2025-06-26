@@ -147,18 +147,15 @@ export default function OfferAnalyticsClient({ offer }: Props) {
               series={[
                 {
                   data: revenueTrend,
-                  label: 'Revenue',
                   color: '#10B981'
                 },
                 {
                   data: redemptionTrend,
-                  label: 'Redemptions',
                   color: '#3B82F6'
                 }
               ]}
               xAxis={[{ data: months, scaleType: 'point', label: 'Month', labelStyle: { transform: 'translate(0, 30px)' } }]}
               yAxis={[{
-                label: 'Amount (ETH)',
                 labelStyle: { transform: 'translate(-40px, 0)' },
                 valueFormatter: (v) => `${v} ETH`
               }]}
