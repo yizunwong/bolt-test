@@ -9,10 +9,10 @@ export interface Policy {
   name: string;
   category?: string;
   provider?: string;
-  coverage?: number;
-  premium?: number;
-  sales?: number;
-  revenue?: number;
+  coverage?: string | number;
+  premium?: string | number;
+  sales?: number | string;
+  revenue?: string | number;
   created?: Date | string;
   lastUpdated?: Date | string;
   description?: string;
@@ -48,6 +48,16 @@ const currency = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
 });
+
+const numberFormatter = new Intl.NumberFormat('en-US');
+
+function formatValue(value?: string | number, opts?: { currency?: boolean }) {
+  if (value === undefined || value === null) return '-';
+  if (typeof value === 'number') {
+    return opts?.currency ? currency.format(value) : numberFormatter.format(value);
+  }
+  return value;
+}
 
 function formatDate(value?: Date | string) {
   if (!value) return '';
@@ -113,7 +123,7 @@ export function PolicyDetailsDialog({ policy, open, onClose }: PolicyDetailsDial
                 Coverage
               </Typography>
               <Typography variant="body1" noWrap>
-                {policy.coverage != null ? currency.format(policy.coverage) : '-'}
+                {formatValue(policy.coverage, { currency: typeof policy.coverage === 'number' })}
               </Typography>
             </Grid>
             <Grid item xs={12} md={6}>
@@ -121,7 +131,7 @@ export function PolicyDetailsDialog({ policy, open, onClose }: PolicyDetailsDial
                 Premium
               </Typography>
               <Typography variant="body1" noWrap>
-                {policy.premium != null ? currency.format(policy.premium) : '-'}
+                {formatValue(policy.premium, { currency: typeof policy.premium === 'number' })}
               </Typography>
             </Grid>
             <Grid item xs={12} md={6}>
@@ -129,7 +139,7 @@ export function PolicyDetailsDialog({ policy, open, onClose }: PolicyDetailsDial
                 Sales
               </Typography>
               <Typography variant="body1" noWrap>
-                {policy.sales != null ? currency.format(policy.sales) : '-'}
+                {formatValue(policy.sales)}
               </Typography>
             </Grid>
             <Grid item xs={12} md={6}>
@@ -137,7 +147,7 @@ export function PolicyDetailsDialog({ policy, open, onClose }: PolicyDetailsDial
                 Revenue
               </Typography>
               <Typography variant="body1" noWrap>
-                {policy.revenue != null ? currency.format(policy.revenue) : '-'}
+                {formatValue(policy.revenue, { currency: typeof policy.revenue === 'number' })}
               </Typography>
             </Grid>
           </Grid>
