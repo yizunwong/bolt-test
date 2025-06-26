@@ -162,7 +162,12 @@ export default function EditSeasonalOfferDialog({
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0">
-                  <Calendar mode="single" selected={startDate ?? undefined} onSelect={setStartDate} initialFocus />
+                  <Calendar
+                    mode="single"
+                    selected={startDate ?? undefined}
+                    onSelect={(day) => setStartDate(day ?? null)}
+                    initialFocus
+                  />
                 </PopoverContent>
               </Popover>
             </div>
@@ -178,7 +183,12 @@ export default function EditSeasonalOfferDialog({
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0">
-                  <Calendar mode="single" selected={endDate ?? undefined} onSelect={setEndDate} initialFocus />
+                  <Calendar
+                    mode="single"
+                    selected={endDate ?? undefined}
+                    onSelect={(day) => setEndDate(day ?? null)}
+                    initialFocus
+                  />
                 </PopoverContent>
               </Popover>
             </div>
