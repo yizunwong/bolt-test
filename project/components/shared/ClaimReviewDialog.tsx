@@ -118,7 +118,8 @@ export function ClaimReviewDialog({ claim, trigger }: ClaimReviewDialogProps) {
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+      {/* Widen the dialog so details fit comfortably */}
+      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Claim Review - {claim.id}</DialogTitle>
         </DialogHeader>
