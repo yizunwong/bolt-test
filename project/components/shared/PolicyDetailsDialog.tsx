@@ -1,7 +1,9 @@
 'use client';
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Star, Download } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 
@@ -19,6 +21,9 @@ export interface Policy {
   description?: string;
   features?: string[];
   terms?: string;
+  documents?: { name: string; url: string }[];
+  reviews?: { user: string; rating: number; comment: string }[];
+  rating?: number;
   status?: 'active' | 'inactive' | string;
 }
 
@@ -86,6 +91,22 @@ export default function PolicyDetailsDialog({ policy, open, onClose }: PolicyDet
                   {policy.provider || '-'}
                 </p>
               </div>
+              {policy.rating !== undefined && (
+                <div className="space-y-1">
+                  <p className="text-sm text-slate-600 dark:text-slate-400">Rating</p>
+                  <div className="flex items-center">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star
+                        key={i}
+                        className={`w-4 h-4 ${i < Math.round(policy.rating!) ? 'fill-yellow-500 text-yellow-500' : 'text-slate-400'}`}
+                      />
+                    ))}
+                    <span className="ml-2 text-sm text-slate-700 dark:text-slate-300">
+                      {policy.rating?.toFixed(1)}
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -171,7 +192,45 @@ export default function PolicyDetailsDialog({ policy, open, onClose }: PolicyDet
               </p>
             </div>
           )}
+
+          {policy.documents && policy.documents.length > 0 && (
+            <div className="space-y-2">
+              <h4 className="font-semibold text-slate-800 dark:text-slate-100">Documents</h4>
+              <div className="space-y-1">
+                {policy.documents.map((doc, idx) => (
+                  <a key={idx} href={doc.url} className="flex items-center text-emerald-600 hover:underline" target="_blank" rel="noopener noreferrer">
+                    <Download className="w-4 h-4 mr-1" /> {doc.name}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {policy.reviews && policy.reviews.length > 0 && (
+            <div className="space-y-2">
+              <h4 className="font-semibold text-slate-800 dark:text-slate-100">Reviews</h4>
+              <div className="space-y-2">
+                {policy.reviews.map((review, idx) => (
+                  <div key={idx} className="p-2 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+                    <div className="flex items-center mb-1">
+                      <span className="font-medium text-slate-700 dark:text-slate-300 mr-2">{review.user}</span>
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`w-3 h-3 ${i < review.rating ? 'fill-yellow-500 text-yellow-500' : 'text-slate-400'}`}
+                        />
+                      ))}
+                    </div>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">{review.comment}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
+        <DialogFooter className="mt-6">
+          <Button onClick={onClose} className="w-full sm:w-auto">Close</Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
