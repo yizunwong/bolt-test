@@ -41,6 +41,7 @@ export default function OfferAnalyticsClient({ offer }: Props) {
   const historicalAvg = 5;
   const redemptionTrend = [1, 2, 0, 3, 1, 2, 1];
   const revenueTrend = [0, 0.5, 0.8, 1.1, 1.4, 2, 3];
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'];
   const heatMapValues = [0.1, 0.3, 0.2, 0.4, 0.6, 0.5, 0.3];
 
   return (
@@ -130,25 +131,47 @@ export default function OfferAnalyticsClient({ offer }: Props) {
             <CardTitle>Revenue &amp; Redemptions Trend</CardTitle>
           </CardHeader>
           <CardContent>
-            <svg viewBox="0 0 120 60" className="w-full h-32 text-emerald-500">
+            <svg viewBox="0 0 140 80" className="w-full h-40">
+              <line x1="30" y1="10" x2="30" y2="60" className="stroke-slate-300 dark:stroke-slate-700" />
+              <line x1="30" y1="60" x2="130" y2="60" className="stroke-slate-300 dark:stroke-slate-700" />
               <polyline
                 fill="none"
-                stroke="currentColor"
+                stroke="rgb(16,185,129)"
                 strokeWidth="2"
                 points={revenueTrend
-                  .map((v, i) => `${i * 20},${60 - v * 10}`)
+                  .map((v, i) => `${30 + i * 15},${60 - v * 15}`)
                   .join(' ')}
               />
-            </svg>
-            <svg viewBox="0 0 120 60" className="w-full h-32 mt-4 text-blue-500">
               <polyline
                 fill="none"
-                stroke="currentColor"
+                stroke="rgb(59,130,246)"
                 strokeWidth="2"
                 points={redemptionTrend
-                  .map((v, i) => `${i * 20},${60 - v * 10}`)
+                  .map((v, i) => `${30 + i * 15},${60 - v * 15}`)
                   .join(' ')}
               />
+              {months.map((m, i) => (
+                <text
+                  key={m}
+                  x={30 + i * 15}
+                  y="72"
+                  className="text-[10px] fill-slate-600 dark:fill-slate-400"
+                  textAnchor="middle"
+                >
+                  {m}
+                </text>
+              ))}
+              {[0, 1, 2, 3].map((a) => (
+                <text
+                  key={a}
+                  x="20"
+                  y={60 - a * 15 + 4}
+                  className="text-[10px] fill-slate-600 dark:fill-slate-400"
+                  textAnchor="end"
+                >
+                  {a}
+                </text>
+              ))}
             </svg>
           </CardContent>
         </Card>
@@ -158,13 +181,17 @@ export default function OfferAnalyticsClient({ offer }: Props) {
             <CardTitle>Conversion Rate Heat Map</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-7 gap-1">
+            <div className="grid grid-cols-7 gap-2">
               {heatMapValues.map((v, i) => (
-                <div
-                  key={i}
-                  className="w-6 h-6 rounded-sm"
-                  style={{ backgroundColor: `rgba(16,185,129,${v})` }}
-                />
+                <div key={i} className="flex flex-col items-center">
+                  <div
+                    className="w-6 h-6 rounded-sm"
+                    style={{ backgroundColor: `rgba(16,185,129,${v})` }}
+                  />
+                  <span className="text-[10px] text-slate-600 dark:text-slate-400 mt-1">
+                    W{i + 1}
+                  </span>
+                </div>
               ))}
             </div>
           </CardContent>
