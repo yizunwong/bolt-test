@@ -12,6 +12,20 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Pagination } from '@/components/shared/Pagination';
 import PolicyDetailsDialog, { Policy } from '@/components/shared/PolicyDetailsDialog';
 import EditPolicyDialog from '@/components/shared/EditPolicyDialog';
+<<<<<<< mxhs0y-codex/move-dummy-data-to-public/data
+import {
+  policies,
+  getCategoryIcon,
+  getCategoryColor,
+  getStatusColor,
+} from '@/public/data/admin/policiesData';
+import {
+  Plus,
+  Search,
+  Filter,
+  Edit,
+  Trash2,
+=======
 import { policies } from '@/public/data/admin/policiesData';
 import { 
   Plus, 
@@ -19,10 +33,8 @@ import {
   Filter, 
   Edit, 
   Trash2, 
+>>>>>>> main
   Shield,
-  Heart,
-  Plane,
-  Sprout,
   Eye,
   Save,
   X
