@@ -156,8 +156,7 @@ export default function OfferAnalyticsClient({ offer }: Props) {
                 }
               ]}
               xAxis={[{ data: months, scaleType: 'point', label: 'Month' }]}
-              yAxis={[{ label: 'Amount (ETH)' }]}
-              valueFormatter={(v) => `${v} ETH`}
+              yAxis={[{ label: 'Amount (ETH)', valueFormatter: (v) => `${v} ETH` }]}
             >
               <ChartsLegend position="bottom" />
               <ChartsTooltip />
