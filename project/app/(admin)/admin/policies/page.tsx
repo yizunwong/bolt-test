@@ -18,16 +18,13 @@ import {
   getCategoryColor,
   getStatusColor,
 } from '@/public/data/admin/policiesData';
-import { 
-  Plus, 
-  Search, 
-  Filter, 
-  Edit, 
-  Trash2, 
+import {
+  Plus,
+  Search,
+  Filter,
+  Edit,
+  Trash2,
   Shield,
-  Heart,
-  Plane,
-  Sprout,
   Eye,
   Save,
   X

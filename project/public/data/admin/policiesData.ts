@@ -1,3 +1,5 @@
+import { Heart, Plane, Sprout, Shield } from 'lucide-react';
+
 export const policies = [
     {
       id: 'POL-001',
