@@ -2,7 +2,6 @@
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
-import { X } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 
@@ -63,13 +62,6 @@ export default function PolicyDetailsDialog({ policy, open, onClose }: PolicyDet
               }</Badge>
             )}
           </div>
-          <button
-            onClick={onClose}
-            className="ml-2 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
-          >
-            <X className="w-4 h-4" />
-            <span className="sr-only">Close</span>
-          </button>
         </DialogHeader>
         <div className="space-y-6 mt-4">
           <div className="space-y-4">
