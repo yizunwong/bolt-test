@@ -271,3 +271,4 @@ export const quickStats = {
     avgPolicyValue: '1.96 ETH',
     customerSatisfaction: '94.2%',
     processingTime: '2.3 days'
+}
