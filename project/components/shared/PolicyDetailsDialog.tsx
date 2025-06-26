@@ -1,7 +1,10 @@
-import React from 'react';
-import { Dialog, DialogTitle, DialogContent, IconButton, Typography, Chip, Divider, Grid, Box } from '@mui/material';
+'use client';
+
+import React, { useMemo } from 'react';
+import { Dialog, DialogContent, IconButton, Typography, Chip, Divider, Grid, Box, CssBaseline } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { styled } from '@mui/material/styles';
+import { styled, ThemeProvider as MUIThemeProvider, createTheme } from '@mui/material/styles';
+import { useTheme as useAppTheme } from '@/components/shared/ThemeProvider';
 import { format } from 'date-fns';
 
 export interface Policy {
@@ -66,8 +69,23 @@ function formatDate(value?: Date | string) {
 }
 
 export function PolicyDetailsDialog({ policy, open, onClose }: PolicyDetailsDialogProps) {
+  const { theme } = useAppTheme();
+  const mode = useMemo(() => {
+    if (theme === 'system') {
+      if (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return 'dark';
+      }
+      return 'light';
+    }
+    return theme;
+  }, [theme]);
+
+  const muiTheme = useMemo(() => createTheme({ palette: { mode } }), [mode]);
+
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
+    <MUIThemeProvider theme={muiTheme}>
+      <CssBaseline />
+      <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
       <Header>
         <Typography variant="h6" component="div" noWrap>
           {policy.name}
@@ -206,7 +224,8 @@ export function PolicyDetailsDialog({ policy, open, onClose }: PolicyDetailsDial
           </Section>
         )}
       </DialogContent>
-    </Dialog>
+      </Dialog>
+    </MUIThemeProvider>
   );
 }
 
