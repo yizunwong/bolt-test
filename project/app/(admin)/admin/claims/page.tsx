@@ -5,9 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import ClaimReviewDialog from '@/components/shared/ClaimReviewDialog';
 import { Pagination } from '@/components/shared/Pagination';
 import { 
   FileText, 
@@ -28,7 +27,6 @@ import {
 const ITEMS_PER_PAGE = 10;
 
 export default function ClaimsReview() {
-  const [selectedClaim, setSelectedClaim] = useState<any>(null);
   const [filterStatus, setFilterStatus] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -705,123 +703,15 @@ export default function ClaimsReview() {
 
                 <div className="flex items-center justify-between">
                   <div className="flex space-x-2">
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button 
-                          variant="outline" 
-                          className="floating-button"
-                          onClick={() => setSelectedClaim(claim)}
-                        >
+                    <ClaimReviewDialog
+                      claim={claim}
+                      trigger={
+                        <Button variant="outline" className="floating-button">
                           <Eye className="w-4 h-4 mr-2" />
                           Review Details
                         </Button>
-                      </DialogTrigger>
-                      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
-                        <DialogHeader>
-                          <DialogTitle>Claim Review - {selectedClaim?.id}</DialogTitle>
-                        </DialogHeader>
-                        {selectedClaim && (
-                          <div className="content-spacing">
-                            {/* Claim Details */}
-                            <div className="grid md:grid-cols-2 gap-6">
-                              <div>
-                                <h4 className="font-semibold text-slate-800 dark:text-slate-100 mb-3">Claim Information</h4>
-                                <div className="element-spacing">
-                                  <div className="flex justify-between">
-                                    <span className="text-slate-600 dark:text-slate-400">Claim ID:</span>
-                                    <span className="text-slate-800 dark:text-slate-100">{selectedClaim.id}</span>
-                                  </div>
-                                  <div className="flex justify-between">
-                                    <span className="text-slate-600 dark:text-slate-400">Policy:</span>
-                                    <span className="text-slate-800 dark:text-slate-100">{selectedClaim.policyName}</span>
-                                  </div>
-                                  <div className="flex justify-between">
-                                    <span className="text-slate-600 dark:text-slate-400">Amount:</span>
-                                    <span className="text-slate-800 dark:text-slate-100">{selectedClaim.amount}</span>
-                                  </div>
-                                  <div className="flex justify-between">
-                                    <span className="text-slate-600 dark:text-slate-400">Type:</span>
-                                    <span className="text-slate-800 dark:text-slate-100">{selectedClaim.type}</span>
-                                  </div>
-                                </div>
-                              </div>
-                              <div>
-                                <h4 className="font-semibold text-slate-800 dark:text-slate-100 mb-3">Claimant Details</h4>
-                                <div className="element-spacing">
-                                  <div className="flex justify-between">
-                                    <span className="text-slate-600 dark:text-slate-400">Name:</span>
-                                    <span className="text-slate-800 dark:text-slate-100">{selectedClaim.claimant}</span>
-                                  </div>
-                                  <div className="flex justify-between">
-                                    <span className="text-slate-600 dark:text-slate-400">Email:</span>
-                                    <span className="text-slate-800 dark:text-slate-100">{selectedClaim.claimantEmail}</span>
-                                  </div>
-                                  <div className="flex justify-between">
-                                    <span className="text-slate-600 dark:text-slate-400">Submitted:</span>
-                                    <span className="text-slate-800 dark:text-slate-100">{new Date(selectedClaim.submittedDate).toLocaleDateString()}</span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* Description */}
-                            <div>
-                              <h4 className="font-semibold text-slate-800 dark:text-slate-100 mb-2">Description</h4>
-                              <p className="text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg">{selectedClaim.description}</p>
-                            </div>
-
-                            {/* Documents */}
-                            <div>
-                              <h4 className="font-semibold text-slate-800 dark:text-slate-100 mb-3">Supporting Documents</h4>
-                              <div className="grid grid-cols-2 gap-2">
-                                {selectedClaim.documents.map((doc: string, index: number) => (
-                                  <div key={index} className="flex items-center justify-between bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg">
-                                    <div className="flex items-center space-x-2">
-                                      <FileText className="w-4 h-4 text-slate-500 dark:text-slate-400" />
-                                      <span className="text-sm text-slate-700 dark:text-slate-300">{doc}</span>
-                                    </div>
-                                    <Button size="sm" variant="ghost" className="h-6 w-6 p-0">
-                                      <Download className="w-3 h-3" />
-                                    </Button>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-
-                            {/* Review Notes */}
-                            <div>
-                              <h4 className="font-semibold text-slate-800 dark:text-slate-100 mb-2">Review Notes</h4>
-                              <Textarea
-                                placeholder="Add your review notes here..."
-                                defaultValue={selectedClaim.reviewNotes}
-                                className="form-input min-h-[100px]"
-                              />
-                            </div>
-
-                            {/* Actions */}
-                            {(selectedClaim.status === 'pending' || selectedClaim.status === 'under-review') && (
-                              <div className="responsive-stack pt-4 border-t border-slate-200 dark:border-slate-700">
-                                <Button
-                                  variant="outline"
-                                  onClick={() => handleReject(selectedClaim.id)}
-                                  className="flex-1 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800 hover:bg-red-50 dark:hover:bg-red-900/20"
-                                >
-                                  <X className="w-4 h-4 mr-2" />
-                                  Reject Claim
-                                </Button>
-                                <Button
-                                  onClick={() => handleApprove(selectedClaim.id)}
-                                  className="flex-1 gradient-accent text-white floating-button"
-                                >
-                                  <CheckCircle className="w-4 h-4 mr-2" />
-                                  Approve Claim
-                                </Button>
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </DialogContent>
-                    </Dialog>
+                      }
+                    />
                   </div>
 
                   {(claim.status === 'pending' || claim.status === 'under-review') && (

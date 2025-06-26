@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { StatsCard } from '@/components/shared/StatsCard';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import ClaimReviewDialog from '@/components/shared/ClaimReviewDialog';
 import { 
   Shield, 
   Users, 
@@ -13,7 +14,8 @@ import {
   Clock,
   DollarSign,
   FileText,
-  Eye
+  Eye,
+  X
 } from 'lucide-react';
 
 export default function AdminDashboard() {
@@ -30,6 +32,7 @@ export default function AdminDashboard() {
     { name: 'Weather-Based Crop Insurance', sales: 156, revenue: '390 ETH', trend: '+15%' },
     { name: 'Premium Health Plus', sales: 98, revenue: '147 ETH', trend: '+5%' }
   ];
+
 
   return (
     <div className="section-spacing">
@@ -117,9 +120,7 @@ export default function AdminDashboard() {
                             {claim.status.charAt(0).toUpperCase() + claim.status.slice(1)}
                           </Badge>
                         </div>
-                        <Button size="sm" variant="outline" className="floating-button">
-                          Review
-                        </Button>
+                        <ClaimReviewDialog claim={claim} />
                       </div>
                     </div>
                   ))}
