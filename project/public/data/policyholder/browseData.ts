@@ -17,7 +17,15 @@ export const policies = [
     rating: 4.8,
     features: ['Emergency Care', 'Prescription Drugs', 'Mental Health', 'Dental'],
     popular: true,
-    description: 'Complete healthcare coverage with blockchain-verified claims processing'
+    description: 'Complete healthcare coverage with blockchain-verified claims processing',
+    documents: [
+      { name: 'Policy Terms', url: '#' },
+      { name: 'Coverage Details', url: '#' }
+    ],
+    reviews: [
+      { user: 'Alice', rating: 5, comment: 'Excellent coverage and service.' },
+      { user: 'Bob', rating: 4, comment: 'Good value for the price.' }
+    ]
   },
   {
     id: 2,
@@ -29,7 +37,11 @@ export const policies = [
     rating: 4.6,
     features: ['Trip Cancellation', 'Medical Emergency', 'Lost Luggage', '24/7 Support'],
     popular: false,
-    description: 'Worldwide travel insurance with instant claim verification'
+    description: 'Worldwide travel insurance with instant claim verification',
+    documents: [{ name: 'Policy Overview', url: '#' }],
+    reviews: [
+      { user: 'Jane', rating: 4, comment: 'Very handy for frequent travelers.' }
+    ]
   },
   {
     id: 3,
@@ -41,7 +53,8 @@ export const policies = [
     rating: 4.9,
     features: ['Weather Oracle', 'Yield Protection', 'Automated Payouts', 'Satellite Monitoring'],
     popular: true,
-    description: 'Smart contract insurance using IoT and weather data'
+    description: 'Smart contract insurance using IoT and weather data',
+    documents: [{ name: 'Policy Terms', url: '#' }]
   },
   {
     id: 4,

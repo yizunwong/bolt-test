@@ -9,6 +9,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Pagination } from '@/components/shared/Pagination';
 import { Heart, Plane, Sprout, Shield, Search, Filter, Star } from 'lucide-react';
 import { policyCategories, policies } from '@/public/data/policyholder/browseData';
+import PolicyDetailsDialog, { Policy } from '@/components/shared/PolicyDetailsDialog';
+import Link from 'next/link';
+import { logEvent } from '@/lib/analytics';
 
 const ITEMS_PER_PAGE = 6;
 
@@ -17,6 +20,8 @@ export default function BrowsePolicies() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('popular');
   const [currentPage, setCurrentPage] = useState(1);
+  const [showDetails, setShowDetails] = useState(false);
+  const [selectedPolicy, setSelectedPolicy] = useState<Policy | null>(null);
   const filteredPolicies = useMemo(() => {
     let filtered = policies.filter(policy => {
       const matchesSearch = policy.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -54,6 +59,17 @@ export default function BrowsePolicies() {
   const handleFilterChange = (filterFn: () => void) => {
     filterFn();
     setCurrentPage(1);
+  };
+
+  const openDetails = (policy: Policy) => {
+    setSelectedPolicy(policy);
+    setShowDetails(true);
+    logEvent('open_policy_details', policy.id);
+  };
+
+  const closeDetails = () => {
+    setShowDetails(false);
+    if (selectedPolicy) logEvent('close_policy_details', selectedPolicy.id);
   };
 
   return (
@@ -207,12 +223,24 @@ export default function BrowsePolicies() {
                   </div>
 
                   <div className="flex gap-2">
-                    <Button variant="outline" className="flex-1 floating-button">
+                    <Button
+                      variant="outline"
+                      className="flex-1 floating-button"
+                      onClick={() => openDetails(policy)}
+                    >
                       Details
                     </Button>
-                    <Button className="flex-1 gradient-accent text-white floating-button">
-                      Buy with Token
-                    </Button>
+                    <Link
+                      href={`/policyholder/buy-with-token?policyId=${policy.id}`}
+                      className="flex-1"
+                    >
+                      <Button
+                        onClick={() => logEvent('start_purchase', policy.id)}
+                        className="w-full gradient-accent text-white floating-button"
+                      >
+                        Buy with Token
+                      </Button>
+                    </Link>
                   </div>
                 </CardContent>
               </Card>
@@ -237,6 +265,10 @@ export default function BrowsePolicies() {
             <h3 className="text-xl font-semibold text-slate-600 dark:text-slate-400 mb-2">No policies found</h3>
             <p className="text-slate-500 dark:text-slate-500">Try adjusting your search criteria</p>
           </div>
+        )}
+
+        {selectedPolicy && (
+          <PolicyDetailsDialog policy={selectedPolicy} open={showDetails} onClose={closeDetails} />
         )}
       </div>
     </div>
