@@ -11,6 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Pagination } from '@/components/shared/Pagination';
+import EditSeasonalOfferDialog from '@/components/shared/EditSeasonalOfferDialog';
 import { 
   Gift, 
   Plus, 
@@ -32,12 +33,13 @@ const ITEMS_PER_PAGE = 8;
 
 export default function SeasonalOffers() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-  const [selectedOffer, setSelectedOffer] = useState<any>(null);
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [offerToEdit, setOfferToEdit] = useState<any | null>(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   const [newOffer, setNewOffer] = useState({
     title: '',
@@ -758,7 +760,14 @@ export default function SeasonalOffers() {
                 </div>
 
                 <div className="flex gap-2 pt-4 border-t border-slate-100 dark:border-slate-700">
-                  <Button variant="outline" className="flex-1 floating-button">
+                  <Button
+                    variant="outline"
+                    className="flex-1 floating-button"
+                    onClick={() => {
+                      setOfferToEdit(offer);
+                      setIsEditDialogOpen(true);
+                    }}
+                  >
                     <Edit className="w-4 h-4 mr-2" />
                     Edit
                   </Button>
@@ -796,6 +805,21 @@ export default function SeasonalOffers() {
           </div>
         )}
       </div>
+      {offerToEdit && (
+        <EditSeasonalOfferDialog
+          offer={offerToEdit}
+          open={isEditDialogOpen}
+          onClose={() => {
+            setIsEditDialogOpen(false);
+            setOfferToEdit(null);
+          }}
+          onSave={(o) => {
+            console.log('Saving offer:', o);
+            setIsEditDialogOpen(false);
+            setOfferToEdit(null);
+          }}
+        />
+      )}
     </div>
   );
 }
